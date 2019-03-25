@@ -1,7 +1,11 @@
 package planetarium;
 
-public class Satellite extends Corpo_celeste{
+public class Satellite extends CorpoCeleste{
 	int distPianeta;
+	
+	public Satellite(String _nome, String _codice, int _peso, Punto _punto) {
+		super(_nome, _codice, _peso, _punto);
+	}
 	
 	/** 
      * @param dist 

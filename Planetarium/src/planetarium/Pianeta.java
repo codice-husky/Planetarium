@@ -1,11 +1,13 @@
 package planetarium;
 import java.util.*;
 
-public class Pianeta extends Corpo_celeste {
+public class Pianeta extends CorpoCeleste {
 	private int distStella;
 	private LinkedList<Satellite> satelliti;
 
-    public Pianeta() {}
+	public Pianeta(String _nome, String _codice, int _peso, Punto _punto) {
+		super(_nome, _codice, _peso, _punto);
+	}
 
     /**
      * @return
