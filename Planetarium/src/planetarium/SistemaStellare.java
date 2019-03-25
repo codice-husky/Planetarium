@@ -1,16 +1,17 @@
 package planetarium;
-import java.util.Scanner;
 
-public class Sistema_Stellare {
+public class SistemaStellare {
 	String nome;
 	Stella stella;
 	boolean esisteStella = false;
 	
-	public Sistema_Stellare(String nome) {
+	public SistemaStellare(String nome) {
 		this.nome = nome;
 	}
 	
-	public void aggiungiStella() {}
+	public void aggiungiStella(Stella _stella) {
+		stella = _stella;
+	}
 	public void rimuoviStella() {}
 	/** 
      * @return 

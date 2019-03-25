@@ -1,14 +1,22 @@
 package planetarium;
-import java.util.Scanner;
-public abstract class Corpo_celeste {
+public abstract class CorpoCeleste {
 	String nome;
-	int peso, codice;
+	int peso;
+	String codice;
 	Punto punto;
+	
+	public CorpoCeleste(String _nome, String _codice, int _peso, Punto _punto) {
+		nome = _nome;
+		codice = _codice;
+		peso = _peso;
+		punto = _punto;
+	}
+	
 	
 	/**
      * @param nome
      */
-	public void setNome(){
+	public void setNome(String nome){
 		this.nome = nome;
 	}
 	/** 
@@ -32,13 +40,13 @@ public abstract class Corpo_celeste {
 	/** 
      * @param codice 
      */
-	public void setCodice(int codice) {
+	public void setCodice(String codice) {
 		this.codice = codice;
 	}
 	/** 
      * @return 
      */
-	public int getCodice() {
+	public String getCodice() {
 		return codice;
 	}
 	/** 
