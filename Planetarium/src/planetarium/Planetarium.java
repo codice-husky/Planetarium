@@ -4,7 +4,7 @@ public class Planetarium {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		System.out.println("Ciao");
+		int ciao = 666;
 	}
 
 }
