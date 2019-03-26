@@ -43,5 +43,10 @@ public class Stella extends CorpoCeleste{
 		return null;
 	}
 	
+	public int getNumPianeti() {
+		if(pianeti == null) return 0;
+		else return pianeti.size();
+	}
+	
 	
 }
