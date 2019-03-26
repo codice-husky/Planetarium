@@ -21,6 +21,12 @@ public class Planetarium {
 			case "aggiungi stella":
 				aggiungiStella(ss);
 				break;
+			case "aggiungi pianeta":
+				aggiungiPianeta(ss);
+				break;
+			case "aggiungi satellite":
+				aggiungiSatellite(ss);
+				break;
 			}
 		}
 		
@@ -42,7 +48,7 @@ public class Planetarium {
 		System.out.println("collidono: per vedere se 2 corpi potrebbero collidere");
 	}
 	
-	public static void aggiungiStella(SistemaStellare ss) {
+	public static boolean aggiungiStella(SistemaStellare ss) {
 		System.out.println("Inserisci il nome della stella: ");
 		String nome = sc.nextLine();
 		String codice;
@@ -62,33 +68,73 @@ public class Planetarium {
 		int coordY = sc.nextInt();
 		Punto punto = new Punto(coordX, coordY);
 		
-		ss.aggiungiStella(new Stella(nome, codice, peso, punto));
+		return ss.aggiungiStella(new Stella(nome, codice, peso, punto));
 		
 		
 	}
 	
-	public static void aggiungiPianeta(Stella stella) {
-		System.out.println("Inserisci il nome del pianeta: ");
-		String nome = sc.nextLine();
-		String codice;
+	public static void aggiungiPianeta(SistemaStellare ss) {
+		if(ss.getStella() == null) {
+			System.out.println("Bisogna prima aggiungere una stella!");
+			return;
+		} else {
+			Stella stella = ss.getStella();
+			System.out.println("Inserisci il nome del pianeta: ");
+			String nome = sc.nextLine();
+			String codice;
+			
+			System.out.println("Vuoi assegnare un codice manualmente? S/[N]: ");
+			boolean codiceMan = sc.nextLine().equals("S")? true : false;
+			if(codiceMan) {
+				System.out.println("Inserisci il codice del pianeta: ");
+				codice = sc.nextLine();
+			} else codice = "PRND" + Math.floor(Math.random()*100000);
+			
+			System.out.println("Inserisci il peso del pianeta: ");
+			int peso = Integer.parseInt(sc.nextLine());
+			
+			System.out.println("Inserisci le coordinate del pianeta (x,y): ");
+			int coordX = sc.nextInt();
+			int coordY = sc.nextInt();
+			Punto punto = new Punto(coordX, coordY);
+			
+			stella.aggiungiPianeta(new Pianeta(nome, codice, peso, punto));
+		}
+	}
+	
+	public static void aggiungiSatellite(SistemaStellare ss) {
+		if(ss.getStella() == null) {
+			System.out.println("Bisogna prima aggiungere una stella!");
+			return;
+		} else if(ss.getStella().getNumPianeti() == 0) {
+			System.out.println("Bisogna prima aggiungere almeno un pianeta!");
+			return;
+		} else {
+			System.out.println("Inserisci il codice del pianeta: ");
+			String codPianeta = sc.nextLine();
+			Pianeta pianeta = ss.getStella().getPianeta(codPianeta);
+			
+			
+			System.out.println("Inserisci il nome del satellite: ");
+			String nome = sc.nextLine();
+			String codice;
 		
-		System.out.println("Vuoi assegnare un codice manualmente? S/[N]: ");
-		boolean codiceMan = sc.nextLine().equals("S")? true : false;
-		if(codiceMan) {
-			System.out.println("Inserisci il codice della stella: ");
-			codice = sc.nextLine();
-		} else codice = "PRND" + Math.floor(Math.random()*100000);
-		
-		System.out.println("Inserisci il peso del pianeta: ");
-		int peso = Integer.parseInt(sc.nextLine());
-		
-		System.out.println("Inserisci le coordinate del pianeta (x,y): ");
-		int coordX = sc.nextInt();
-		int coordY = sc.nextInt();
-		Punto punto = new Punto(coordX, coordY);
-		
-		stella.aggiungiPianeta(new Pianeta(nome, codice, peso, punto));
-		
-		
+			System.out.println("Vuoi assegnare un codice manualmente? S/[N]: ");
+			boolean codiceMan = sc.nextLine().equals("S")? true : false;
+			if(codiceMan) {
+				System.out.println("Inserisci il codice del saellite: ");
+				codice = sc.nextLine();
+			} else codice = "PRND" + Math.floor(Math.random()*100000);
+			
+			System.out.println("Inserisci il peso del pianeta: ");
+			int peso = Integer.parseInt(sc.nextLine());
+			
+			System.out.println("Inserisci le coordinate del satellite (x,y): ");
+			int coordX = sc.nextInt();
+			int coordY = sc.nextInt();
+			Punto punto = new Punto(coordX, coordY);
+			
+			pianeta.aggiungiSat(new Satellite(nome, codice, peso, punto));
+		}
 	}
 }
