@@ -14,7 +14,12 @@ public class SistemaStellare {
 			return true;
 		} else return false;
 	}
-	public void rimuoviStella() {}
+	public boolean rimuoviStella() {
+		if(stella != null) {
+			stella = null;
+			return true;
+		} else return false;
+	}
 	
 
 	public Stella getStella() {
@@ -41,9 +46,19 @@ public class SistemaStellare {
 	 * @param codice 
      * @return 
      */
-	public boolean presenteCorpo(int codice) {
-		//ricerca del corpo celeste attraverso il codice
-		return false;
+	public boolean presenteCorpo(String codice) {
+		if(stella.getCodice().equals(codice)) return true;
+		else {
+			for(Pianeta pianeta : stella.getPianeti()) {
+	    		if(pianeta.getCodice().equals(codice)) return true;
+	    		else {
+	    			for(Satellite satellite : pianeta.getSatelliti()) {
+	    				if(satellite.getCodice().equals(codice)) return true;
+	    			}
+	    		}
+	    	}
+			return false;
+		}
 	}
 	/** 
      * @param codice
