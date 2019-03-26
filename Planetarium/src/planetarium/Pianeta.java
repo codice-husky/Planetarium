@@ -12,8 +12,9 @@ public class Pianeta extends CorpoCeleste {
     /**
      * @return
      */
-    public void aggiungiSat(Satellite satellite) {
+    public boolean aggiungiSat(Satellite satellite) {
     	satelliti.add(satellite);
+    	return true;
     }
 
     /**
