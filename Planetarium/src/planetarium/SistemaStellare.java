@@ -2,15 +2,17 @@ package planetarium;
 
 public class SistemaStellare {
 	String nome;
-	Stella stella;
-	boolean esisteStella = false;
+	Stella stella = null;
 	
 	public SistemaStellare(String nome) {
 		this.nome = nome;
 	}
 	
-	public void aggiungiStella(Stella _stella) {
-		stella = _stella;
+	public boolean aggiungiStella(Stella _stella) {
+		if(stella == null) {
+			stella = _stella;
+			return true;
+		} else return false;
 	}
 	public void rimuoviStella() {}
 	/** 
@@ -19,17 +21,7 @@ public class SistemaStellare {
 	public boolean getEsisteStella() {
 		return false;                       //PER CAPIRE SE ESISTE GIA' UNA STELLA E 
 	}										//IN QUEL CASO NON AGGIUNGERNE UNA
-	/** 
-     * @param esisteStella 
-     */
-	public void setEsisteStella() {
-		esisteStella = !esisteStella;
-		/*avevo pensato dato che esiste una sola stella bisogna controllare se esiste (quando creo il sistema
-		  è settata su false), se non esiste parte l'aggiungiStella che chiamando questo metodo la mette 
-		  a true. Quando la vuole togliere chiama il rimuoviStella che sempre attravero questo metodo
-		  la rimette a false 
-		*/
-	}    
+
 	/** 
      * @return 
      */
