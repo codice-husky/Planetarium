@@ -21,13 +21,28 @@ public class Pianeta extends CorpoCeleste {
     /**
      * @param codice 
      */
-    public void rimuoviSat(String codice){}
+    public boolean rimuoviSat(String codice){
+    	boolean isRemove = false;
+    	for(Satellite satellite: satelliti) {
+    		if(satellite.codice.equals(codice)){
+    			satelliti.remove(satellite);
+    			isRemove = true;
+    		}
+    	}
+    	return isRemove;
+    }
 
     /**
      * @param codice
      * @return
      */
-    public Satellite getSat(String codice){return null;}
+    public Satellite getSat(String codice){
+    	for(Satellite satellite: satelliti) {
+    		if(satellite.codice.equals(codice))
+    			return satellite;
+    	}
+    	return null;
+    }
 
     /**
      * @param dist 
