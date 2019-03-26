@@ -8,6 +8,8 @@ public class Punto {
 	 * @param y
 	*/
 	public Punto(int x, int y) {
+		setX(x);
+		setY(y);
 	}
 	/** 
      * @param x 
