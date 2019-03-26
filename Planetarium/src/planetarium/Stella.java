@@ -20,7 +20,7 @@ public class Stella extends CorpoCeleste{
      * @param codice
      * @return
      */
-	public boolean rimuoviPian(int codice) {
+	public boolean rimuoviPian(String codice) {
 		boolean isRemove = false;
     	for(Pianeta pianeta: pianeti) {
     		if(pianeta.codice.equals(codice)){
@@ -35,7 +35,7 @@ public class Stella extends CorpoCeleste{
      * @param codice
      * @return
      */
-	public Pianeta getPianeta(int codice) {
+	public Pianeta getPianeta(String codice) {
 		for(Pianeta pianeta: pianeti) {
     		if(pianeta.codice.equals(codice))
     			return pianeta;
