@@ -1,6 +1,33 @@
 package planetarium;
 import java.util.Scanner;
 
+class InputData {
+	String nome;
+	String codice;
+	int peso;
+	Punto coordinate;
+	
+	InputData(String testo, Scanner sc) {
+		System.out.println("Inserisci il nome della stella: ");
+		nome = sc.nextLine();
+		
+		System.out.println("Vuoi assegnare un codice manualmente? S/[N]: ");
+		boolean codiceMan = sc.nextLine().equals("S")? true : false;
+		if(codiceMan) {
+			System.out.println("Inserisci il codice della stella: ");
+			codice = sc.nextLine();
+		} else codice = "SRND" + Math.floor(Math.random()*100000);
+		
+		System.out.println("Inserisci il peso della stella: ");
+		peso = Integer.parseInt(sc.nextLine());
+		
+		System.out.println("Inserisci le coordinate della stella (x,y): ");
+		int coordX = sc.nextInt();
+		int coordY = sc.nextInt();
+		coordinate = new Punto(coordX, coordY);
+	}
+}
+
 public class Planetarium {
 	private static Scanner sc = new Scanner(System.in);
 
@@ -49,57 +76,15 @@ public class Planetarium {
 	}
 	
 	public static boolean aggiungiStella(SistemaStellare ss) {
-		System.out.println("Inserisci il nome della stella: ");
-		String nome = sc.nextLine();
-		String codice;
-		
-		System.out.println("Vuoi assegnare un codice manualmente? S/[N]: ");
-		boolean codiceMan = sc.nextLine().equals("S")? true : false;
-		if(codiceMan) {
-			System.out.println("Inserisci il codice della stella: ");
-			codice = sc.nextLine();
-		} else codice = "SRND" + Math.floor(Math.random()*100000);
-		
-		System.out.println("Inserisci il peso della stella: ");
-		int peso = Integer.parseInt(sc.nextLine());
-		
-		System.out.println("Inserisci le coordinate della stella (x,y): ");
-		int coordX = sc.nextInt();
-		int coordY = sc.nextInt();
-		Punto punto = new Punto(coordX, coordY);
-		
-		return ss.aggiungiStella(new Stella(nome, codice, peso, punto));
+		InputData inputStella = new InputData("la stella", sc);
+		return ss.aggiungiStella(new Stella(inputStella.nome, inputStella.codice, inputStella.peso, inputStella.coordinate));
 		
 		
 	}
 	
 	public static void aggiungiPianeta(SistemaStellare ss) {
-		if(ss.getStella() == null) {
-			System.out.println("Bisogna prima aggiungere una stella!");
-			return;
-		} else {
-			Stella stella = ss.getStella();
-			System.out.println("Inserisci il nome del pianeta: ");
-			String nome = sc.nextLine();
-			String codice;
-			
-			System.out.println("Vuoi assegnare un codice manualmente? S/[N]: ");
-			boolean codiceMan = sc.nextLine().equals("S")? true : false;
-			if(codiceMan) {
-				System.out.println("Inserisci il codice del pianeta: ");
-				codice = sc.nextLine();
-			} else codice = "PRND" + Math.floor(Math.random()*100000);
-			
-			System.out.println("Inserisci il peso del pianeta: ");
-			int peso = Integer.parseInt(sc.nextLine());
-			
-			System.out.println("Inserisci le coordinate del pianeta (x,y): ");
-			int coordX = sc.nextInt();
-			int coordY = sc.nextInt();
-			Punto punto = new Punto(coordX, coordY);
-			
-			stella.aggiungiPianeta(new Pianeta(nome, codice, peso, punto));
-		}
+		InputData inputPianeta = new InputData(" pianeta", sc);
+		ss.getStella().aggiungiPianeta(new Pianeta(inputPianeta.nome, inputPianeta.codice, inputPianeta.peso, inputPianeta.coordinate));
 	}
 	
 	public static void aggiungiSatellite(SistemaStellare ss) {
