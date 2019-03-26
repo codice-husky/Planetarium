@@ -3,27 +3,43 @@ package planetarium;
 import java.util.LinkedList;
 
 public class Stella extends CorpoCeleste{
-	private LinkedList<Pianeta> pianeti = new LinkedList<Pianeta>();
+	private LinkedList<Pianeta> pianeti;
 	
 	
 	public Stella(String _nome, String _codice, int _peso, Punto _punto) {
 		super(_nome, _codice, _peso, _punto);
-
+		pianeti = new LinkedList<Pianeta>();
 	}
 	
 	
-	public void aggiungiPian() {}
+	public void aggiungiPian(Pianeta pianeta) {
+		pianeti.add(pianeta);
+	}
 	
 	/**
-     * @param int codice
+     * @param codice
+     * @return
      */
-	public void rimuoviPian(int codice) {}
+	public boolean rimuoviPian(int codice) {
+		boolean isRemove = false;
+    	for(Pianeta pianeta: pianeti) {
+    		if(pianeta.codice.equals(codice)){
+    			pianeti.remove(pianeta);
+    			isRemove = true;
+    		}
+    	}
+		return isRemove;
+	}
 	
 	/**
-     * @param int codice
+     * @param codice
      * @return
      */
 	public Pianeta getPianeta(int codice) {
+		for(Pianeta pianeta: pianeti) {
+    		if(pianeta.codice.equals(codice))
+    			return pianeta;
+    	}
 		return null;
 	}
 	
