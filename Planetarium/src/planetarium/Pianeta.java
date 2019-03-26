@@ -2,12 +2,10 @@ package planetarium;
 import java.util.*;
 
 public class Pianeta extends CorpoCeleste {
-	private int distStella;
 	private LinkedList<Satellite> satelliti;
 
-	public Pianeta(String _nome, String _codice, int _peso, Punto _punto,int _distanzaStella) {
+	public Pianeta(String _nome, String _codice, int _peso, Punto _punto) {
 		super(_nome, _codice, _peso, _punto);
-		distStella = _distanzaStella;
 		satelliti = new LinkedList<Satellite>();
 	}
 
@@ -20,6 +18,7 @@ public class Pianeta extends CorpoCeleste {
 
     /**
      * @param codice 
+     * @return
      */
     public boolean rimuoviSat(String codice){
     	boolean isRemove = false;
@@ -43,19 +42,4 @@ public class Pianeta extends CorpoCeleste {
     	}
     	return null;
     }
-
-    /**
-     * @param dist 
-     */
-    public void setDistanzaStella(int dist) {
-    	this.distStella = dist; 
-    }
-
-    /**
-     * @return 
-     */
-    public int getDistanzaStella() {
-    	return distStella;
-    }
-
 }
