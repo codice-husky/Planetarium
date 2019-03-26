@@ -52,7 +52,7 @@ public class Planetarium {
 		if(codiceMan) {
 			System.out.println("Inserisci il codice della stella: ");
 			codice = sc.nextLine();
-		} else codice = "RND" + Math.floor(Math.random()*100000);
+		} else codice = "SRND" + Math.floor(Math.random()*100000);
 		
 		System.out.println("Inserisci il peso della stella: ");
 		int peso = Integer.parseInt(sc.nextLine());
@@ -63,6 +63,31 @@ public class Planetarium {
 		Punto punto = new Punto(coordX, coordY);
 		
 		ss.aggiungiStella(new Stella(nome, codice, peso, punto));
+		
+		
+	}
+	
+	public static void aggiungiPianeta(Stella stella) {
+		System.out.println("Inserisci il nome del pianeta: ");
+		String nome = sc.nextLine();
+		String codice;
+		
+		System.out.println("Vuoi assegnare un codice manualmente? S/[N]: ");
+		boolean codiceMan = sc.nextLine().equals("S")? true : false;
+		if(codiceMan) {
+			System.out.println("Inserisci il codice della stella: ");
+			codice = sc.nextLine();
+		} else codice = "PRND" + Math.floor(Math.random()*100000);
+		
+		System.out.println("Inserisci il peso del pianeta: ");
+		int peso = Integer.parseInt(sc.nextLine());
+		
+		System.out.println("Inserisci le coordinate del pianeta (x,y): ");
+		int coordX = sc.nextInt();
+		int coordY = sc.nextInt();
+		Punto punto = new Punto(coordX, coordY);
+		
+		stella.aggiungiPianeta(new Pianeta(nome, codice, peso, punto));
 		
 		
 	}
