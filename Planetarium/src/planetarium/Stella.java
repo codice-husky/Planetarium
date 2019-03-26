@@ -12,7 +12,7 @@ public class Stella extends CorpoCeleste{
 	}
 	
 	
-	public void aggiungiPian(Pianeta pianeta) {
+	public void aggiungiPianeta(Pianeta pianeta) {
 		pianeti.add(pianeta);
 	}
 	
