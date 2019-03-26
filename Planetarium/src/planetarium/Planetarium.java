@@ -78,48 +78,32 @@ public class Planetarium {
 	public static boolean aggiungiStella(SistemaStellare ss) {
 		InputData inputStella = new InputData("la stella", sc);
 		return ss.aggiungiStella(new Stella(inputStella.nome, inputStella.codice, inputStella.peso, inputStella.coordinate));
-		
-		
 	}
 	
-	public static void aggiungiPianeta(SistemaStellare ss) {
-		InputData inputPianeta = new InputData(" pianeta", sc);
-		ss.getStella().aggiungiPianeta(new Pianeta(inputPianeta.nome, inputPianeta.codice, inputPianeta.peso, inputPianeta.coordinate));
-	}
-	
-	public static void aggiungiSatellite(SistemaStellare ss) {
+	public static boolean aggiungiPianeta(SistemaStellare ss) {
 		if(ss.getStella() == null) {
 			System.out.println("Bisogna prima aggiungere una stella!");
-			return;
+			return false;
+		} else {
+			InputData inputPianeta = new InputData(" pianeta", sc);
+			return ss.getStella().aggiungiPianeta(new Pianeta(inputPianeta.nome, inputPianeta.codice, inputPianeta.peso, inputPianeta.coordinate));
+		}
+	}
+	
+	public static boolean aggiungiSatellite(SistemaStellare ss) {
+		if(ss.getStella() == null) {
+			System.out.println("Bisogna prima aggiungere una stella!");
+			return false;
 		} else if(ss.getStella().getNumPianeti() == 0) {
 			System.out.println("Bisogna prima aggiungere almeno un pianeta!");
-			return;
+			return false;
 		} else {
 			System.out.println("Inserisci il codice del pianeta: ");
 			String codPianeta = sc.nextLine();
 			Pianeta pianeta = ss.getStella().getPianeta(codPianeta);
 			
-			
-			System.out.println("Inserisci il nome del satellite: ");
-			String nome = sc.nextLine();
-			String codice;
-		
-			System.out.println("Vuoi assegnare un codice manualmente? S/[N]: ");
-			boolean codiceMan = sc.nextLine().equals("S")? true : false;
-			if(codiceMan) {
-				System.out.println("Inserisci il codice del saellite: ");
-				codice = sc.nextLine();
-			} else codice = "PRND" + Math.floor(Math.random()*100000);
-			
-			System.out.println("Inserisci il peso del pianeta: ");
-			int peso = Integer.parseInt(sc.nextLine());
-			
-			System.out.println("Inserisci le coordinate del satellite (x,y): ");
-			int coordX = sc.nextInt();
-			int coordY = sc.nextInt();
-			Punto punto = new Punto(coordX, coordY);
-			
-			pianeta.aggiungiSat(new Satellite(nome, codice, peso, punto));
+			InputData inputSatellite = new InputData(" satellite", sc);
+			return pianeta.aggiungiSat(new Satellite(inputSatellite.nome, inputSatellite.codice, inputSatellite.peso, inputSatellite.coordinate));
 		}
 	}
 }
