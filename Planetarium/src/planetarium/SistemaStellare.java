@@ -15,12 +15,11 @@ public class SistemaStellare {
 		} else return false;
 	}
 	public void rimuoviStella() {}
-	/** 
-     * @return 
-     */
-	public boolean getEsisteStella() {
-		return false;                       //PER CAPIRE SE ESISTE GIA' UNA STELLA E 
-	}										//IN QUEL CASO NON AGGIUNGERNE UNA
+	
+
+	public Stella getStella() {
+		return stella;
+	}
 
 	/** 
      * @return 
