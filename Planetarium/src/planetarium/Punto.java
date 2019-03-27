@@ -1,38 +1,38 @@
 package planetarium;
 
 public class Punto {
-	int cordX,cordY;
+	double cordX,cordY;
 	
 	/**
 	 * @param x
 	 * @param y
 	*/
-	public Punto(int x, int y) {
+	public Punto(double x, double y) {
 		setX(x);
 		setY(y);
 	}
 	/** 
      * @param x 
      */
-	public void setX(int x) {
+	public void setX(double x) {
 		this.cordX = x;
 	}
 	/** 
      * @return 
      */
-	public int getX() {
+	public double getX() {
 		return cordX;
 	}
 	/** 
      * @param y
      */
-	public void setY(int y) {
+	public void setY(double y) {
 		this.cordY = y;
 	}
 	/** 
      * @return 
      */
-	public int getY() {
+	public double getY() {
 		return cordY;
 	}
 }
