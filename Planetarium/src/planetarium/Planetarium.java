@@ -67,12 +67,9 @@ public class Planetarium {
 				String ris = ss.percorso(memo);
 				System.out.println(ris);
 				break;
-			case "visualizza pianeti":
-				printPianeti(ss);
-				break;
-			case "visualizza satelliti":
-				printSatelliti(ss);
-				break;
+			case "visualizza sistema":
+				printSistema(ss);
+			break;
 			default:
 				System.out.println("Comando non riconosciuto!");
 				break;
@@ -159,38 +156,15 @@ public class Planetarium {
 		return (sc.nextLine());
 	}
 	
-	public static void printPianeti(SistemaStellare ss) {
-		ArrayList<String> nomi = new ArrayList<String>();
-		nomi = ss.stella.getNomiPianeti();
-		System.out.print("Lista dei pianeti: \n  ");
-		int i=0;
-		for(String nome: nomi) {
-			if(i!=(nomi.size()-1))
-				System.out.print(nome+", ");
-			else
-				System.out.print(nome);
-			i++;
-		}
-		System.out.println();
-	}
-	
-	public static void printSatelliti(SistemaStellare ss) {
-		String codice = getCodice();
-		ArrayList<String> nomi = new ArrayList<String>();
-		Pianeta p = ss.stella.cercaPianeta(codice);
-		if(p != null) {
-			nomi = p.getNomiSatelliti();
-			int i=0;
-			for(String nome: nomi) {
-				if(i!=(nomi.size()-1))
-					System.out.print(nome+", ");
-				else
-					System.out.print(nome);
-				i++;
+	public static void printSistema(SistemaStellare ss) {
+		System.out.println("Stella "+ ss.stella.getNome());
+		for(Pianeta pianeta: ss.stella.getPianeti()) {
+			System.out.println(String.format("  Pianeta: %s(%s)", 
+					pianeta.getNome(),pianeta.getCodice()));
+			for(Satellite satellite: pianeta.getSatelliti()) {
+				System.out.println(String.format("    Satellite: %s(%s)", 
+						satellite.getNome(),satellite.getCodice()));
 			}
-			System.out.println();
-		}else {
-			System.out.println("Non esiste un pianeta con quel codice");
 		}
 	}
 }
