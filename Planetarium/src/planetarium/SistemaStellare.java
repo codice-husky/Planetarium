@@ -29,24 +29,26 @@ public class SistemaStellare {
 	/** 
      * @return 
      */
-	public static Punto calcolaMassa(){
+	public Punto calcolaMassa(){
 	    int massa = stella.getPeso();
 	    Punto punto = stella.getCord();
-	    int x = punto.getX();
-	    int y = punto.getY();
+	    double x = (punto.getX() * stella.getPeso());
+	    double y = (punto.getY() * stella.getPeso());
 	    
 	    for(Pianeta pianeta: stella.getPianeti()){
 	        punto = pianeta.getCord();
 	        massa += pianeta.getPeso();
-	        x += punto.getX();
-	        y += punto.getY();
+	        x += (punto.getX() * pianeta.getPeso());
+	        y += (punto.getY() * pianeta.getPeso());
 	        for(Satellite satellite: pianeta.getSatelliti()){
 	            punto = satellite.getCord();
 	            massa += satellite.getPeso();
-	            x += punto.getX();
-	            y += punto.getY();
+	            x += (punto.getX() * satellite.getPeso());
+	            y += (punto.getY() * satellite.getPeso());
 	        }
 	    }
+	    x /= massa;
+	    y /= massa;
 	    Punto centroMassa = new Punto(x,y);
 	    return centroMassa;
 	}
