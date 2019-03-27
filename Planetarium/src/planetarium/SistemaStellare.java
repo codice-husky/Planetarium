@@ -65,22 +65,22 @@ public class SistemaStellare {
      * @return 
      */
 	public String percorso(String codice){
-		String perc = "Stella : "+ stella.getCodice();
+		String perc = "Stella : "+ stella.getNome()+"("+stella.getCodice()+")";
 		if(stella.getCodice().equals(codice)) return perc;
 		else {
-			perc.concat(" > Pianeta: ");
+			perc = perc.concat("\n  Pianeta: ");
 			for(Pianeta pianeta: stella.getPianeti()) {
-				String sPian = pianeta.getCodice();
+				String sPian = pianeta.getNome()+"("+pianeta.getCodice()+")";
 				if(pianeta.getCodice().equals(codice)) {
-					perc.concat(sPian);
+					perc = perc.concat(sPian);
 					return perc;
 				}else {
-					sPian.concat(" > Satellite: ");
+					sPian = sPian.concat("\n    Satellite: ");
 					for(Satellite satellite: pianeta.getSatelliti()) {
-						String sSat = satellite.getCodice();
+						String sSat = satellite.getNome()+"("+satellite.getCodice()+")";
 						if(satellite.getCodice().equals(codice)) {
-							perc.concat(sPian);
-							perc.concat(sSat);
+							perc = perc.concat(sPian);
+							perc = perc.concat(sSat);
 							return perc;
 						}
 					}
