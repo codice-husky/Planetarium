@@ -54,12 +54,4 @@ public class Stella extends CorpoCeleste{
 		if(pianeti == null) return 0;
 		else return pianeti.size();
 	}
-	
-	public ArrayList<String> getNomiPianeti(){
-		ArrayList<String>nomiPianeti = new ArrayList<String>();
-		for(Pianeta pianeta: pianeti) {
-			nomiPianeti.add(pianeta.getNome());
-		}
-		return nomiPianeti;
-	}
 }
