@@ -8,22 +8,23 @@ class InputData {
 	Punto coordinate;
 	
 	InputData(String testo, Scanner sc) {
-		System.out.println("Inserisci il nome della stella: ");
+		System.out.println("Inserisci il nome del"+testo+": ");
 		nome = sc.nextLine();
 		
 		System.out.println("Vuoi assegnare un codice manualmente? S/[N]: ");
 		boolean codiceMan = sc.nextLine().equals("S")? true : false;
 		if(codiceMan) {
-			System.out.println("Inserisci il codice della stella: ");
+			System.out.println("Inserisci il codice del"+testo+": ");
 			codice = sc.nextLine();
 		} else codice = "SRND" + Math.floor(Math.random()*100000);
 		
-		System.out.println("Inserisci il peso della stella: ");
+		System.out.println("Inserisci il peso del "+testo +": ");
 		peso = Integer.parseInt(sc.nextLine());
 		
-		System.out.println("Inserisci le coordinate della stella (x,y): ");
+		System.out.println("Inserisci le coordinate del"+ testo+ " (x y): ");
 		int coordX = sc.nextInt();
 		int coordY = sc.nextInt();
+		sc.reset();
 		coordinate = new Punto(coordX, coordY);
 	}
 }
@@ -39,7 +40,7 @@ public class Planetarium {
 		System.out.println("Digita aiuto per ricevere aiuto");
 		boolean end = false;
 		while(end == false) {
-			System.out.println("Che cosa vuoi fare? ");
+			System.out.print("Che cosa vuoi fare? ");
 			cmnd = sc.nextLine();
 			switch(cmnd) {
 			case "aiuto":
@@ -54,6 +55,13 @@ public class Planetarium {
 			case "aggiungi satellite":
 				aggiungiSatellite(ss);
 				break;
+			case "percorso":
+				String memo = getCodice();
+				String ris = ss.percorso(memo);
+				System.out.println(ris);
+				break;
+			default:
+				System.out.println("Comando non riconosciuto!");
 			}
 		}
 		
@@ -76,17 +84,34 @@ public class Planetarium {
 	}
 	
 	public static boolean aggiungiStella(SistemaStellare ss) {
-		InputData inputStella = new InputData("la stella", sc);
-		return ss.aggiungiStella(new Stella(inputStella.nome, inputStella.codice, inputStella.peso, inputStella.coordinate));
+		//NON HO VOGLIA DI CREARE ROBA OGNI VOLTA
+		//----------------ORIGINALE-----------------------
+		//InputData inputStella = new InputData("la stella", sc);
+		//return ss.aggiungiStella(new Stella(inputStella.nome, inputStella.codice, inputStella.peso, inputStella.coordinate));
+		//---------------------------------------------------
+		//------------PER VELOCIZZARE------------------------
+		Punto p = new Punto(0,0);
+		Stella s = new Stella("Eskere","0001",76,p);
+		return ss.aggiungiStella(s);
+		//---------------------------------------------------
 	}
 	
 	public static boolean aggiungiPianeta(SistemaStellare ss) {
 		if(ss.getStella() == null) {
 			System.out.println("Bisogna prima aggiungere una stella!");
 			return false;
-		} else {
-			InputData inputPianeta = new InputData(" pianeta", sc);
-			return ss.getStella().aggiungiPianeta(new Pianeta(inputPianeta.nome, inputPianeta.codice, inputPianeta.peso, inputPianeta.coordinate));
+		} else {			
+			//NON HO VOGLIA DI CREARE ROBA OGNI VOLTA
+			//----------------ORIGINALE-----------------------
+			//return ss.getStella().aggiungiPianeta(new Pianeta(inputPianeta.nome, inputPianeta.codice, inputPianeta.peso, inputPianeta.coordinate));
+			//InputData inputPianeta = new InputData(" pianeta", sc);
+			//---------------------------------------------------
+			//------------PER VELOCIZZARE------------------------
+			Punto punto = new Punto(0,2);
+			Pianeta p = new Pianeta("Pippo", "0002",56,punto);
+			return ss.getStella().aggiungiPianeta(p);
+			//---------------------------------------------------
+			
 		}
 	}
 	
@@ -98,12 +123,25 @@ public class Planetarium {
 			System.out.println("Bisogna prima aggiungere almeno un pianeta!");
 			return false;
 		} else {
-			System.out.println("Inserisci il codice del pianeta: ");
-			String codPianeta = sc.nextLine();
-			Pianeta pianeta = ss.getStella().getPianeta(codPianeta);
-			
-			InputData inputSatellite = new InputData(" satellite", sc);
-			return pianeta.aggiungiSat(new Satellite(inputSatellite.nome, inputSatellite.codice, inputSatellite.peso, inputSatellite.coordinate));
+			//NON HO VOGLIA DI CREARE ROBA OGNI VOLTA
+			//----------------ORIGINALE-----------------------
+			//System.out.println("Inserisci il codice del pianeta: ");
+			//String codPianeta = sc.nextLine();
+			//Pianeta pianeta = ss.getStella().cercaPianeta(codPianeta);
+			//InputData inputSatellite = new InputData(" satellite", sc);
+			//return pianeta.aggiungiSatellite(new Satellite(inputSatellite.nome, inputSatellite.codice, inputSatellite.peso, inputSatellite.coordinate));
+			//-------------------------------------------------------
+			//------------PER VELOCIZZARE------------------------
+			Punto p = new Punto(1,3);
+			Pianeta pianeta = ss.getStella().cercaPianeta("0002");
+			Satellite s = new Satellite("la droga","0003",8,p);
+			return pianeta.aggiungiSatellite(s);
+			//---------------------------------------------------
 		}
+	}
+	
+	public static String getCodice() {
+		System.out.println("Inserisci il codice: ");
+		return (sc.nextLine());
 	}
 }
