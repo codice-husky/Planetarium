@@ -47,4 +47,12 @@ public class Pianeta extends CorpoCeleste {
     	}
     	return null;
     }
+    
+    public ArrayList<String> getNomiSatelliti(){
+		ArrayList<String>nomiSatelliti = new ArrayList<String>();
+		for(Satellite satellite: satelliti) {
+			nomiSatelliti.add(satellite.getNome());
+		}
+		return nomiSatelliti;
+	}
 }

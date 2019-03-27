@@ -1,5 +1,6 @@
 package planetarium;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class Stella extends CorpoCeleste{
@@ -54,5 +55,11 @@ public class Stella extends CorpoCeleste{
 		else return pianeti.size();
 	}
 	
-	
+	public ArrayList<String> getNomiPianeti(){
+		ArrayList<String>nomiPianeti = new ArrayList<String>();
+		for(Pianeta pianeta: pianeti) {
+			nomiPianeti.add(pianeta.getNome());
+		}
+		return nomiPianeti;
+	}
 }
