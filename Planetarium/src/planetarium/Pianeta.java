@@ -9,7 +9,11 @@ public class Pianeta extends CorpoCeleste {
 		satelliti = new LinkedList<Satellite>();
 	}
 
-    /**
+    public LinkedList<Satellite> getSatelliti() {
+		return satelliti;
+	}
+
+	/**
      * @return
      */
     public boolean aggiungiSatellite(Satellite satellite) {
@@ -36,7 +40,7 @@ public class Pianeta extends CorpoCeleste {
      * @param codice
      * @return
      */
-    public Satellite getSatelliti(String codice){
+    public Satellite cercaSatellite(String codice){
     	for(Satellite satellite: satelliti) {
     		if(satellite.codice.equals(codice))
     			return satellite;

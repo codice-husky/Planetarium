@@ -64,9 +64,31 @@ public class SistemaStellare {
      * @param codice
      * @return 
      */
-	public String percorso(int codice){
-		//stampa percorso (stella > pianeta > satellite)
-		return "";
+	public String percorso(String codice){
+		String perc = "Stella : "+ stella.getCodice();
+		if(stella.getCodice().equals(codice)) return perc;
+		else {
+			perc.concat(" > Pianeta: ");
+			for(Pianeta pianeta: stella.getPianeti()) {
+				String sPian = pianeta.getCodice();
+				if(pianeta.getCodice().equals(codice)) {
+					perc.concat(sPian);
+					return perc;
+				}else {
+					sPian.concat(" > Satellite: ");
+					for(Satellite satellite: pianeta.getSatelliti()) {
+						String sSat = satellite.getCodice();
+						if(satellite.getCodice().equals(codice)) {
+							perc.concat(sPian);
+							perc.concat(sSat);
+							return perc;
+						}
+					}
+				}
+			}
+		}
+		perc = "Non è stato trovato un pianeta con quel codice";
+		return perc;
 	}
 	
 }
