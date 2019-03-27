@@ -1,4 +1,5 @@
 package planetarium;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 class InputData {
@@ -24,18 +25,24 @@ class InputData {
 		System.out.println("Inserisci le coordinate del"+ testo+ " (x y): ");
 		int coordX = sc.nextInt();
 		int coordY = sc.nextInt();
-		sc.reset();
+		sc.nextLine();
 		coordinate = new Punto(coordX, coordY);
 	}
 }
 
 public class Planetarium {
 	private static Scanner sc = new Scanner(System.in);
-
 	public static void main(String[] args) {
 		System.out.print("Inserisci il nome del sistema solare: ");
 		String nome = sc.nextLine();
 		SistemaStellare ss = new SistemaStellare(nome);
+		//CREAZIONE AUTOMATICA STELLA, PIANETA, SATELLITE
+		System.out.println("SONO STATI CREATI AUTOMATICAMENTE UNA STELLA"
+				+ " UN PIANETA E UN SATELLITE ");
+		aggiungiStella(ss);
+		aggiungiPianeta(ss);
+		aggiungiSatellite(ss);
+		//--------------------------------------
 		String cmnd;
 		System.out.println("Digita aiuto per ricevere aiuto");
 		boolean end = false;
@@ -60,8 +67,15 @@ public class Planetarium {
 				String ris = ss.percorso(memo);
 				System.out.println(ris);
 				break;
+			case "visualizza pianeti":
+				printPianeti(ss);
+				break;
+			case "visualizza satelliti":
+				printSatelliti(ss);
+				break;
 			default:
 				System.out.println("Comando non riconosciuto!");
+				break;
 			}
 		}
 		
@@ -143,5 +157,40 @@ public class Planetarium {
 	public static String getCodice() {
 		System.out.println("Inserisci il codice: ");
 		return (sc.nextLine());
+	}
+	
+	public static void printPianeti(SistemaStellare ss) {
+		ArrayList<String> nomi = new ArrayList<String>();
+		nomi = ss.stella.getNomiPianeti();
+		System.out.print("Lista dei pianeti: \n  ");
+		int i=0;
+		for(String nome: nomi) {
+			if(i!=(nomi.size()-1))
+				System.out.print(nome+", ");
+			else
+				System.out.print(nome);
+			i++;
+		}
+		System.out.println();
+	}
+	
+	public static void printSatelliti(SistemaStellare ss) {
+		String codice = getCodice();
+		ArrayList<String> nomi = new ArrayList<String>();
+		Pianeta p = ss.stella.cercaPianeta(codice);
+		if(p != null) {
+			nomi = p.getNomiSatelliti();
+			int i=0;
+			for(String nome: nomi) {
+				if(i!=(nomi.size()-1))
+					System.out.print(nome+", ");
+				else
+					System.out.print(nome);
+				i++;
+			}
+			System.out.println();
+		}else {
+			System.out.println("Non esiste un pianeta con quel codice");
+		}
 	}
 }
