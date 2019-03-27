@@ -87,7 +87,7 @@ public class SistemaStellare {
 				}
 			}
 		}
-		perc = "Non è stato trovato un pianeta con quel codice";
+		perc = "Non è stato trovato nessun corpo celeste con quel codice";
 		return perc;
 	}
 	
