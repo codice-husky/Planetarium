@@ -2,7 +2,7 @@ package planetarium;
 
 public class SistemaStellare {
 	String nome;
-	Stella stella = null;
+	static Stella stella = null;
 	
 	public SistemaStellare(String nome) {
 		this.nome = nome;
@@ -29,9 +29,26 @@ public class SistemaStellare {
 	/** 
      * @return 
      */
-	public Punto getCentroMassa() {
-		//metodo per calcolo centro massa
-		return null;
+	public static Punto calcolaMassa(){
+	    int massa = stella.getPeso();
+	    Punto punto = stella.getCord();
+	    int x = punto.getX();
+	    int y = punto.getY();
+	    
+	    for(Pianeta pianeta: stella.getPianeti()){
+	        punto = pianeta.getCord();
+	        massa += pianeta.getPeso();
+	        x += punto.getX();
+	        y += punto.getY();
+	        for(Satellite satellite: pianeta.getSatelliti()){
+	            punto = satellite.getCord();
+	            massa += satellite.getPeso();
+	            x += punto.getX();
+	            y += punto.getY();
+	        }
+	    }
+	    Punto centroMassa = new Punto(x,y);
+	    return centroMassa;
 	}
 	/** 
      * @param codiceA
