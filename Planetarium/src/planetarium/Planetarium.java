@@ -37,11 +37,8 @@ public class Planetarium {
 		String nome = sc.nextLine();
 		SistemaStellare ss = new SistemaStellare(nome);
 		//CREAZIONE AUTOMATICA STELLA, PIANETA, SATELLITE
-		/*System.out.println("SONO STATI CREATI AUTOMATICAMENTE UNA STELLA"
-				+ " UN PIANETA E UN SATELLITE ");
-		aggiungiStella(ss);
-		aggiungiPianeta(ss);
-		aggiungiSatellite(ss);*/
+		System.out.println("SONO STATI CREATI AUTOMATICAMENTE UNA STELLA"
+				+ " 2 PIANETI E 3 SATELLITI ");
 		ss.aggiungiStella(new Stella("Sole","0001",30,new Punto(0,0)));
 		ss.stella.aggiungiPianeta(new Pianeta("Pianeta 1","0002",5,new Punto(0,-3)));
 		ss.stella.aggiungiPianeta(new Pianeta("Pianeta 2","0003",7,new Punto(3,3)));
@@ -99,39 +96,26 @@ public class Planetarium {
 		System.out.println("rimuovi pianeta: per rimuovere un pianeta");
 		System.out.println("aggiungi satellite: per aggiungere un satellite");
 		System.out.println("rimuovi satellite: per rimuovere un satellite");
-		System.out.println("calcola rotta: per calcolare la rotta di un corpo celeste");
+		System.out.println("calcola rotta: per calcolare la rotta tra 2 corpi celesti");
 		System.out.println("collidono: per vedere se 2 corpi potrebbero collidere");
 	}
 	
 	public static boolean aggiungiStella(SistemaStellare ss) {
-		//NON HO VOGLIA DI CREARE ROBA OGNI VOLTA
-		//----------------ORIGINALE-----------------------
 		InputData inputStella = new InputData("la stella", sc);
 		return ss.aggiungiStella(new Stella(inputStella.nome, inputStella.codice, inputStella.peso, inputStella.coordinate));
-		//---------------------------------------------------
-		//------------PER VELOCIZZARE------------------------
-		/*Punto p = new Punto(0,0);
-		Stella s = new Stella("Eskere","0001",76,p);
-		return ss.aggiungiStella(s);*/
-		//---------------------------------------------------
 	}
 	
 	public static boolean aggiungiPianeta(SistemaStellare ss) {
 		if(ss.getStella() == null) {
 			System.out.println("Bisogna prima aggiungere una stella!");
 			return false;
-		} else {			
-			//NON HO VOGLIA DI CREARE ROBA OGNI VOLTA
-			//----------------ORIGINALE-----------------------
+		} else {		
 			InputData inputPianeta = new InputData(" pianeta", sc);
+			while(ss.presenteCorpo(inputPianeta.codice)==true) {
+				System.out.println("\nE' gia presente corpo celeste con quel codice!\n");
+				inputPianeta = new InputData(" pianeta", sc);
+			}
 			return ss.getStella().aggiungiPianeta(new Pianeta(inputPianeta.nome, inputPianeta.codice, inputPianeta.peso, inputPianeta.coordinate));
-			//---------------------------------------------------
-			//------------PER VELOCIZZARE------------------------
-			/*Punto punto = new Punto(0,2);
-			Pianeta p = new Pianeta("Pippo", "0002",56,punto);
-			return ss.getStella().aggiungiPianeta(p);*/
-			//---------------------------------------------------
-			
 		}
 	}
 	
@@ -143,8 +127,6 @@ public class Planetarium {
 			System.out.println("Bisogna prima aggiungere almeno un pianeta!");
 			return false;
 		} else {
-			//NON HO VOGLIA DI CREARE ROBA OGNI VOLTA
-			//----------------ORIGINALE-----------------------
 			System.out.println("Inserisci il codice del pianeta: ");
 			String codPianeta = sc.nextLine();
 			Pianeta pianeta = ss.getStella().cercaPianeta(codPianeta);
@@ -153,16 +135,12 @@ public class Planetarium {
 				codPianeta = sc.nextLine();
 				pianeta = ss.getStella().cercaPianeta(codPianeta);
 			}
-				
-			InputData inputSatellite = new InputData(" satellite", sc);
+			InputData inputSatellite = new InputData(" satellite", sc);			
+			while(ss.presenteCorpo(inputSatellite.codice) == true) {
+				System.out.println("\nE' gia presente corpo celeste con quel codice!\n");
+				inputSatellite = new InputData(" pianeta", sc);
+			}	
 			return pianeta.aggiungiSatellite(new Satellite(inputSatellite.nome, inputSatellite.codice, inputSatellite.peso, inputSatellite.coordinate));
-			//-------------------------------------------------------
-			//------------PER VELOCIZZARE------------------------
-			/*Punto p = new Punto(1,3);
-			Pianeta pianeta = ss.getStella().cercaPianeta("0002");
-			Satellite s = new Satellite("la droga","0003",8,p);
-			return pianeta.aggiungiSatellite(s);*/
-			//---------------------------------------------------
 		}
 	}
 	
@@ -184,6 +162,9 @@ public class Planetarium {
 	}
 	
 	public static void centroMassa(SistemaStellare ss) {
-		Punto centro = ss.calcolaMassa();		
+		Punto centro = ss.calcolaMassa();
+		String x = ""+(Math.round(centro.getX()*1000.0)/1000.0);
+		String y = ""+(Math.round(centro.getY()*1000.0)/1000.0);
+		System.out.println(String.format("Le cordinate del centro di massa sono (%s, %s)",x,y));
 	}
 }
