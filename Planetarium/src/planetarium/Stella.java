@@ -36,7 +36,7 @@ public class Stella extends CorpoCeleste{
      * @param codice
      * @return
      */
-	public Pianeta getPianeta(String codice) {
+	public Pianeta cercaPianeta(String codice) {
 		for(Pianeta pianeta: pianeti) {
     		if(pianeta.codice.equals(codice))
     			return pianeta;
@@ -44,6 +44,11 @@ public class Stella extends CorpoCeleste{
 		return null;
 	}
 	
+	public LinkedList<Pianeta> getPianeti() {
+		return pianeti;
+	}
+
+
 	public int getNumPianeti() {
 		if(pianeti == null) return 0;
 		else return pianeti.size();
