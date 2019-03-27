@@ -57,9 +57,26 @@ public class SistemaStellare {
      * @param codiceB
      * @return 
      */
-	public boolean collisione(int codiceA,int codiceB) {
+	public boolean collisione(String codiceA,String codiceB) {
 		//metodo per vedere se si scontrano
 		return false;
+	}
+	public String rotta(String codiceA,String codiceB) {
+		
+		String rotta = "";
+		if(presenteCorpo(codiceA) && presenteCorpo(codiceB)) {
+			if(codiceA.equals(codiceB)) {
+				rotta = "Sono lo stesso corpo";
+				return rotta;
+			}else {
+				if(stella.getCodice().equals(codiceA)) {
+					
+				}
+			}
+		}else {
+			rotta = "Almeno uno dei 2 codici non esiste";
+		}
+		return rotta;
 	}
 	/**
 	 * @param codice 
@@ -109,5 +126,4 @@ public class SistemaStellare {
 		perc = "Non è stato trovato nessun corpo celeste con quel codice";
 		return perc;
 	}
-	
 }

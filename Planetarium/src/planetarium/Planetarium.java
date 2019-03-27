@@ -76,6 +76,9 @@ public class Planetarium {
 			case "centro massa":
 				centroMassa(ss);
 				break;
+			case "scheda corpo":
+				schedaCorpo(ss);
+				break;
 			default:
 				System.out.println("Comando non riconosciuto!");
 				break;
@@ -166,5 +169,14 @@ public class Planetarium {
 		String x = ""+(Math.round(centro.getX()*1000.0)/1000.0);
 		String y = ""+(Math.round(centro.getY()*1000.0)/1000.0);
 		System.out.println(String.format("Le cordinate del centro di massa sono (%s, %s)",x,y));
+	}
+	
+	public static void schedaCorpo(SistemaStellare ss) {
+		String codice = getCodice();
+		if(ss.presenteCorpo(codice)) {
+			
+		}else {
+			System.out.println("Non esiste un corpo celeste con quel nome");
+		}
 	}
 }
