@@ -12,7 +12,7 @@ public class Pianeta extends CorpoCeleste {
     /**
      * @return
      */
-    public boolean aggiungiSat(Satellite satellite) {
+    public boolean aggiungiSatellite(Satellite satellite) {
     	satelliti.add(satellite);
     	return true;
     }
@@ -21,7 +21,7 @@ public class Pianeta extends CorpoCeleste {
      * @param codice 
      * @return
      */
-    public boolean rimuoviSat(String codice){
+    public boolean rimuoviSatelliti(String codice){
     	boolean isRemove = false;
     	for(Satellite satellite: satelliti) {
     		if(satellite.codice.equals(codice)){
@@ -36,7 +36,7 @@ public class Pianeta extends CorpoCeleste {
      * @param codice
      * @return
      */
-    public Satellite getSat(String codice){
+    public Satellite getSatelliti(String codice){
     	for(Satellite satellite: satelliti) {
     		if(satellite.codice.equals(codice))
     			return satellite;
