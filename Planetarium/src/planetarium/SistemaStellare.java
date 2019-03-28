@@ -59,20 +59,20 @@ public class SistemaStellare {
      */
 	public boolean collisione(String codiceA,String codiceB) {
 
-		double vA[] = getDistanzaSole(codiceA);
-		double vB[] = getDistanzaSole(codiceB);
+		double vA[] = getDistanza(codiceA);
+		double vB[] = getDistanza(codiceB);
 		double d = vA[0];
 		double e = vA[1];
 		double d0 = vB[0];
 		double e0 = vB[1];
-		
-		if((returnClass(codiceA).equals("stella")&& returnClass(codiceB).equals(codiceB))|| //stella e pianeta
+		if(codiceA.equals(codiceB)) return false;
+		if((returnClass(codiceA).equals("stella")&& returnClass(codiceB).equals("pianeta"))|| //stella e pianeta
 			returnClass(codiceA).equals("pianeta")&& returnClass(codiceB).equals("stella")) {
 				return false;
 		}else if(returnClass(codiceA).equals("pianeta")&&returnClass(codiceB).equals("pianeta")) {
 			return false; 
 		}else {
-			if(returnClass(codiceA).equals("pianeta")&&returnClass(codiceB).equals("satellite")) { //satB appartenente 
+			if(returnClass(codiceA).equals("pianeta") && returnClass(codiceB).equals("satellite")) { //satB appartenente 
 				for(Pianeta pianeta: stella.getPianeti()) {										   //pianetaA
 					if(pianeta.getCodice().equals(codiceA)) {
 						if(pianeta.cercaSatellite(codiceB)!=null) {
@@ -101,15 +101,19 @@ public class SistemaStellare {
 							b = true;
 						}
 					}
-					if(a == true && b == true) return false;
+					if(a == true && b == true) {
+						return false;
+					}
 				}
 			}
 			if(d0 > d) {
 				if((d0-e0)<=(d+e)) {
+					System.out.println("qui");
 					return true;
 				}
 			}else {
 				if((d0+e0)>=(d-e)) {
+					System.out.println("qua");
 					return true;
 				}
 			}
@@ -127,7 +131,7 @@ public class SistemaStellare {
 					return "pianeta";
 				}else {
 					for(Satellite satellite: pianeta.getSatelliti()) {
-						if(pianeta.getCodice().equals(codice))
+						if(satellite.getCodice().equals(codice))
 							return "satellite";
 					}
 				}
@@ -142,6 +146,7 @@ public class SistemaStellare {
 				rotta = "Sono lo stesso corpo";
 				return rotta;
 			}
+			
 		}else {
 			rotta = "Almeno uno dei 2 codici non esiste";
 		}
@@ -196,7 +201,7 @@ public class SistemaStellare {
 		return perc;
 	}
 	
-	public static double[] getDistanzaSole(String codice) {
+	public static double[] getDistanza(String codice) {
 		double[]c = new double[2];
 		double d = 0, e = 0;
 		boolean memo = false;
@@ -220,10 +225,7 @@ public class SistemaStellare {
 			}
 		}
 		c[0]=d;
-		c[2] =e;
+		c[1] =e;
 		return c;
 	}
-	
-	
-	
 }

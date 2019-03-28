@@ -39,12 +39,12 @@ public class Planetarium {
 		//CREAZIONE AUTOMATICA STELLA, PIANETA, SATELLITE
 		System.out.println("SONO STATI CREATI AUTOMATICAMENTE UNA STELLA"
 				+ " 2 PIANETI E 3 SATELLITI ");
-		ss.aggiungiStella(new Stella("Sole","0001",30,new Punto(0,0)));
-		ss.stella.aggiungiPianeta(new Pianeta("Pianeta 1","0002",5,new Punto(0,-3)));
-		ss.stella.aggiungiPianeta(new Pianeta("Pianeta 2","0003",7,new Punto(3,3)));
-		ss.stella.cercaPianeta("0002").aggiungiSatellite(new Satellite("Luna 1","0004",1,new Punto(-1,-4)));
-		ss.stella.cercaPianeta("0003").aggiungiSatellite(new Satellite("Luna 2","0005",2,new Punto(2,3)));
-		ss.stella.cercaPianeta("0003").aggiungiSatellite(new Satellite("Luna 3","0006",1,new Punto(4,4)));
+		ss.aggiungiStella(new Stella("Sole","1",30,new Punto(0,0)));
+		ss.stella.aggiungiPianeta(new Pianeta("Pianeta 1","2",5,new Punto(3,0)));
+		ss.stella.aggiungiPianeta(new Pianeta("Pianeta 2","3",7,new Punto(6,0)));
+		ss.stella.cercaPianeta("2").aggiungiSatellite(new Satellite("Luna 1","4",1,new Punto(5,0)));
+		ss.stella.cercaPianeta("3").aggiungiSatellite(new Satellite("Luna 2","5",2,new Punto(8,0)));
+		ss.stella.cercaPianeta("3").aggiungiSatellite(new Satellite("Luna 3","6",1,new Punto(4,4)));
 		//--------------------------------------
 		String cmnd;
 		System.out.println("Digita aiuto per ricevere aiuto");
@@ -79,7 +79,7 @@ public class Planetarium {
 			case "scheda corpo":
 				schedaCorpo(ss);
 				break;
-			case "collidono":
+			case "1":
 				collisione(ss);
 			default:
 				System.out.println("Comando non riconosciuto!");
@@ -140,6 +140,7 @@ public class Planetarium {
 				codPianeta = sc.nextLine();
 				pianeta = ss.getStella().cercaPianeta(codPianeta);
 			}
+			
 			InputData inputSatellite = new InputData(" satellite", sc);			
 			while(ss.presenteCorpo(inputSatellite.codice) == true) {
 				System.out.println("\nE' gia presente corpo celeste con quel codice!\n");
@@ -184,6 +185,8 @@ public class Planetarium {
 	public static void collisione(SistemaStellare ss) {
 		String codiceA = getCodice();
 		String codiceB = getCodice();
-		ss.collisione(codiceA, codiceB);
+		boolean collidono = ss.collisione(codiceA, codiceB);
+		if(collidono) System.out.println("I due corpi collideranno");
+		else System.out.println("I due corpi non collideranno");
 	}
 }
