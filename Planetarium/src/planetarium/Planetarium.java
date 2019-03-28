@@ -1,5 +1,4 @@
 package planetarium;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 class InputData {
@@ -116,7 +115,7 @@ public class Planetarium {
 			return false;
 		} else {		
 			InputData inputPianeta = new InputData(" pianeta", sc);
-			while(ss.presenteCorpo(inputPianeta.codice)==true) {
+			while(SistemaStellare.presenteCorpo(ss, inputPianeta.codice)==true) {
 				System.out.println("\nE' gia presente corpo celeste con quel codice!\n");
 				inputPianeta = new InputData(" pianeta", sc);
 			}
@@ -142,7 +141,7 @@ public class Planetarium {
 			}
 			
 			InputData inputSatellite = new InputData(" satellite", sc);			
-			while(ss.presenteCorpo(inputSatellite.codice) == true) {
+			while(SistemaStellare.presenteCorpo(ss, inputSatellite.codice) == true) {
 				System.out.println("\nE' gia presente corpo celeste con quel codice!\n");
 				inputSatellite = new InputData(" pianeta", sc);
 			}	
@@ -176,7 +175,7 @@ public class Planetarium {
 	
 	public static void schedaCorpo(SistemaStellare ss) {
 		String codice = getCodice();
-		if(ss.presenteCorpo(codice)) {
+		if(SistemaStellare.presenteCorpo(ss, codice)) {
 			
 		}else {
 			System.out.println("Non esiste un corpo celeste con quel nome");
