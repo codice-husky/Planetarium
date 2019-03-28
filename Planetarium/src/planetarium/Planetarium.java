@@ -79,6 +79,8 @@ public class Planetarium {
 			case "scheda corpo":
 				schedaCorpo(ss);
 				break;
+			case "collidono":
+				collisione(ss);
 			default:
 				System.out.println("Comando non riconosciuto!");
 				break;
@@ -178,5 +180,10 @@ public class Planetarium {
 		}else {
 			System.out.println("Non esiste un corpo celeste con quel nome");
 		}
+	}
+	public static void collisione(SistemaStellare ss) {
+		String codiceA = getCodice();
+		String codiceB = getCodice();
+		ss.collisione(codiceA, codiceB);
 	}
 }

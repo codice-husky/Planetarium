@@ -58,20 +58,89 @@ public class SistemaStellare {
      * @return 
      */
 	public boolean collisione(String codiceA,String codiceB) {
-		//metodo per vedere se si scontrano
+
+		double vA[] = getDistanzaSole(codiceA);
+		double vB[] = getDistanzaSole(codiceB);
+		double d = vA[0];
+		double e = vA[1];
+		double d0 = vB[0];
+		double e0 = vB[1];
+		
+		if((returnClass(codiceA).equals("stella")&& returnClass(codiceB).equals(codiceB))|| //stella e pianeta
+			returnClass(codiceA).equals("pianeta")&& returnClass(codiceB).equals("stella")) {
+				return false;
+		}else if(returnClass(codiceA).equals("pianeta")&&returnClass(codiceB).equals("pianeta")) {
+			return false; 
+		}else {
+			if(returnClass(codiceA).equals("pianeta")&&returnClass(codiceB).equals("satellite")) { //satB appartenente 
+				for(Pianeta pianeta: stella.getPianeti()) {										   //pianetaA
+					if(pianeta.getCodice().equals(codiceA)) {
+						if(pianeta.cercaSatellite(codiceB)!=null) {
+							return false;
+						}
+					}
+				}
+			}
+			if(returnClass(codiceA).equals("satellite")&&returnClass(codiceB).equals("pianeta")) {//satA appartenente 
+				for(Pianeta pianeta: stella.getPianeti()) {										   //pianetaB
+					if(pianeta.getCodice().equals(codiceB)) {
+						if(pianeta.cercaSatellite(codiceA)!=null) {
+							return false;
+						}
+					}
+				}	
+			}
+			if(returnClass(codiceA).equals("satellite")&&returnClass(codiceB).equals("satellite")) {
+				for(Pianeta pianeta: stella.getPianeti()) {
+					boolean a = false, b = false;
+					for(Satellite satellite: pianeta.getSatelliti()) {
+						if(satellite.getCodice().equals(codiceA)) {
+							a = true;
+						}
+						if(satellite.getCodice().equals(codiceB)) {
+							b = true;
+						}
+					}
+					if(a == true && b == true) return false;
+				}
+			}
+			if(d0 > d) {
+				if((d0-e0)<=(d+e)) {
+					return true;
+				}
+			}else {
+				if((d0+e0)>=(d-e)) {
+					return true;
+				}
+			}
+		}
 		return false;
+	
+	}
+	
+	public String returnClass(String codice) {
+		if(stella.getCodice().equals(codice)) {
+			return "stella";
+		}else {
+			for(Pianeta pianeta: stella.getPianeti()) {
+				if(pianeta.getCodice().equals(codice)) {
+					return "pianeta";
+				}else {
+					for(Satellite satellite: pianeta.getSatelliti()) {
+						if(pianeta.getCodice().equals(codice))
+							return "satellite";
+					}
+				}
+			}
+		}
+		return "";
 	}
 	public String rotta(String codiceA,String codiceB) {
-		
 		String rotta = "";
 		if(presenteCorpo(codiceA) && presenteCorpo(codiceB)) {
 			if(codiceA.equals(codiceB)) {
 				rotta = "Sono lo stesso corpo";
 				return rotta;
-			}else {
-				if(stella.getCodice().equals(codiceA)) {
-					
-				}
 			}
 		}else {
 			rotta = "Almeno uno dei 2 codici non esiste";
@@ -82,7 +151,7 @@ public class SistemaStellare {
 	 * @param codice 
      * @return 
      */
-	public boolean presenteCorpo(String codice) {
+	public static boolean presenteCorpo(String codice) {
 		if(stella.getCodice().equals(codice)) return true;
 		else {
 			for(Pianeta pianeta : stella.getPianeti()) {
@@ -126,4 +195,35 @@ public class SistemaStellare {
 		perc = "Non è stato trovato nessun corpo celeste con quel codice";
 		return perc;
 	}
+	
+	public static double[] getDistanzaSole(String codice) {
+		double[]c = new double[2];
+		double d = 0, e = 0;
+		boolean memo = false;
+		if(presenteCorpo(codice)) {
+			for(Pianeta pianeta: stella.getPianeti()) {
+				if(pianeta.getCodice().equals(codice) || memo == true) break;
+				else {
+					double x1 = Math.pow(pianeta.getCord().getX()-stella.getCord().getX(),2);
+					double y1 = Math.pow(pianeta.getCord().getY()-stella.getCord().getY(),2);
+					d = Math.sqrt(x1+y1);
+					for(Satellite satellite: pianeta.getSatelliti()) {
+						double x2 = Math.pow(satellite.getCord().getX()-pianeta.getCord().getX(),2);
+						double y2 = Math.pow(satellite.getCord().getY()-pianeta.getCord().getY(),2);
+						e = Math.sqrt(x2+y2);
+						if(satellite.getCodice().equals(codice)) {
+							memo = true;
+							break;
+						}
+					}
+				}
+			}
+		}
+		c[0]=d;
+		c[2] =e;
+		return c;
+	}
+	
+	
+	
 }
