@@ -146,7 +146,6 @@ public class SistemaStellare {
 				rotta = "Sono lo stesso corpo";
 				return rotta;
 			}
-			
 		}else {
 			rotta = "Almeno uno dei 2 codici non esiste";
 		}
