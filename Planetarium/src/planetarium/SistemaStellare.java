@@ -2,7 +2,7 @@ package planetarium;
 
 public class SistemaStellare {
 	String nome;
-	static Stella stella = null;
+	Stella stella = null;
 	
 	public SistemaStellare(String nome) {
 		this.nome = nome;
@@ -59,8 +59,8 @@ public class SistemaStellare {
      */
 	public boolean collisione(String codiceA,String codiceB) {
 
-		double vA[] = getDistanza(codiceA);
-		double vB[] = getDistanza(codiceB);
+		double vA[] = SistemaStellare.getDistanza(this, codiceA);
+		double vB[] = SistemaStellare.getDistanza(this, codiceB);
 		double d = vA[0];
 		double e = vA[1];
 		double d0 = vB[0];
@@ -141,7 +141,7 @@ public class SistemaStellare {
 	}
 	public String rotta(String codiceA,String codiceB) {
 		String rotta = "";
-		if(presenteCorpo(codiceA) && presenteCorpo(codiceB)) {
+		if(SistemaStellare.presenteCorpo(this, codiceA) && SistemaStellare.presenteCorpo(this, codiceB)) {
 			if(codiceA.equals(codiceB)) {
 				rotta = "Sono lo stesso corpo";
 				return rotta;
@@ -155,7 +155,8 @@ public class SistemaStellare {
 	 * @param codice 
      * @return 
      */
-	public static boolean presenteCorpo(String codice) {
+	public static boolean presenteCorpo(SistemaStellare ss, String codice) {
+		Stella stella = ss.getStella();
 		if(stella.getCodice().equals(codice)) return true;
 		else {
 			for(Pianeta pianeta : stella.getPianeti()) {
@@ -200,11 +201,12 @@ public class SistemaStellare {
 		return perc;
 	}
 	
-	public static double[] getDistanza(String codice) {
+	public static double[] getDistanza(SistemaStellare ss, String codice) {
+		Stella stella = ss.getStella();
 		double[]c = new double[2];
 		double d = 0, e = 0;
 		boolean memo = false;
-		if(presenteCorpo(codice)) {
+		if(presenteCorpo(ss, codice)) {
 			for(Pianeta pianeta: stella.getPianeti()) {
 				if(pianeta.getCodice().equals(codice) || memo == true) break;
 				else {
