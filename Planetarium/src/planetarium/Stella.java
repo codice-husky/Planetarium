@@ -1,6 +1,5 @@
 package planetarium;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class Stella extends CorpoCeleste{
