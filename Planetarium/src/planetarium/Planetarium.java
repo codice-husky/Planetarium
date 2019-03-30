@@ -78,8 +78,8 @@ public class Planetarium {
 			case "scheda corpo":
 				schedaCorpo(ss);
 				break;
-			case "1":
-				collisione(ss);
+			case "r":
+				ss.rotta("6", "3", ss);
 			default:
 				System.out.println("Comando non riconosciuto!");
 				break;

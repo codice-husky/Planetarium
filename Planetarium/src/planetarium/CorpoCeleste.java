@@ -75,6 +75,7 @@ public abstract class CorpoCeleste {
 	
 	public static CorpoCeleste getCorpoFromCodice(SistemaStellare ss, String codice) {
 		Stella stella = ss.getStella();
+		if(codice.equals(stella.getCodice())) return stella;
 		for(Pianeta pianeta : stella.getPianeti()) {
 			if(pianeta.getCodice().equals(codice)) return pianeta;
 			for(Satellite satellite : pianeta.getSatelliti()) {

@@ -1,5 +1,7 @@
 package planetarium;
 
+import java.util.LinkedList;
+
 public class SistemaStellare {
 	String nome;
 	Stella stella = null;
@@ -146,16 +148,17 @@ public class SistemaStellare {
 		} else return "Almeno uno dei 2 codici non esiste";
 		
 		rotta = rotta.concat(partenza + " > ");
-		String nextHopPartenza = partenza;
+		CorpoCeleste nextHopPartenza = CorpoCeleste.getCorpoFromCodice(ss, partenza);
+		LinkedList<CorpoCeleste> parentPartenza = new LinkedList<CorpoCeleste>();
 		do {
-			CorpoCeleste parentCorpo = CorpoCeleste.getCorpoFromCodice(ss, nextHopPartenza).getParent(ss);
-			if(parentCorpo != null) {
-				rotta = rotta.concat(parentCorpo.getCodice() + " > ");
-			}
+			//System.out.println(nextHopPartenza.getCodice());
+			parentPartenza.add(nextHopPartenza);
+			nextHopPartenza = nextHopPartenza.getParent(ss);
 			
-			
-			
-		} while(false);
+		} while(nextHopPartenza != null);
+		
+		//for(CorpoCeleste corpi : parentPartenza) System.out.println(corpi.getCodice());
+		
 		
 		return rotta; //cacaminchia
 	}
