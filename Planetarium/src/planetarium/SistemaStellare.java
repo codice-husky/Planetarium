@@ -149,7 +149,6 @@ public class SistemaStellare {
 		CorpoCeleste nextHopPartenza = CorpoCeleste.getCorpoFromCodice(ss, partenza);
 		ArrayList<CorpoCeleste> parentPartenza = new ArrayList<CorpoCeleste>();
 		do {
-			//System.out.println(nextHopPartenza.getCodice());
 			parentPartenza.add(nextHopPartenza);
 			nextHopPartenza = nextHopPartenza.getParent(ss);
 		} while(nextHopPartenza != null);
@@ -157,7 +156,6 @@ public class SistemaStellare {
 		CorpoCeleste nextHopArrivo = CorpoCeleste.getCorpoFromCodice(ss, arrivo);
 		ArrayList<CorpoCeleste> parentArrivo = new ArrayList<CorpoCeleste>();
 		do {
-			//System.out.println(nextHopArrivo.getCodice());
 			parentArrivo.add(nextHopArrivo);
 			nextHopArrivo = nextHopArrivo.getParent(ss);
 		} while(nextHopArrivo != null);
@@ -184,7 +182,7 @@ public class SistemaStellare {
 			rotta = rotta.concat(" > " + parentArrivo.get(i).getCodice());
 		}
 		
-		return rotta; //cacaminchia
+		return rotta;
 	}
 	
 		
