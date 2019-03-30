@@ -139,18 +139,28 @@ public class SistemaStellare {
 		}
 		return "";
 	}
-	public String rotta(String codiceA,String codiceB) {
+	public String rotta(String partenza,String arrivo, SistemaStellare ss) {
 		String rotta = "";
-		if(SistemaStellare.presenteCorpo(this, codiceA) && SistemaStellare.presenteCorpo(this, codiceB)) {
-			if(codiceA.equals(codiceB)) {
-				rotta = "Sono lo stesso corpo";
-				return rotta;
+		if(SistemaStellare.presenteCorpo(this, partenza) && SistemaStellare.presenteCorpo(this, arrivo)) {
+			if(partenza.equals(arrivo)) return "Sono lo stesso corpo";
+		} else return "Almeno uno dei 2 codici non esiste";
+		
+		rotta = rotta.concat(partenza + " > ");
+		String nextHopPartenza = partenza;
+		do {
+			CorpoCeleste parentCorpo = CorpoCeleste.getCorpoFromCodice(ss, nextHopPartenza).getParent(ss);
+			if(parentCorpo != null) {
+				rotta = rotta.concat(parentCorpo.getCodice() + " > ");
 			}
-		}else {
-			rotta = "Almeno uno dei 2 codici non esiste";
-		}
-		return rotta;
+			
+			
+			
+		} while(false);
+		
+		return rotta; //cacaminchia
 	}
+	
+		
 	/**
 	 * @param codice 
      * @return 

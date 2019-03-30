@@ -56,4 +56,32 @@ public abstract class CorpoCeleste {
 		return punto;
 	}
 	
+	public double distanzaDa(CorpoCeleste cc) {
+		return Math.sqrt(Math.pow(punto.getX()-cc.getCord().getX(), 2) + Math.pow(punto.getY()-cc.getCord().getY(), 2));
+	}
+	
+	public CorpoCeleste getParent(SistemaStellare ss) {
+		Stella stella = ss.getStella();
+		if(stella.getCodice().equals(codice)) return null;
+		for(Pianeta pianeta : stella.getPianeti()) {
+			if(pianeta.getCodice().equals(codice)) return stella;
+			for(Satellite satellite : pianeta.getSatelliti()) {
+				if(satellite.getCodice().equals(codice)) return pianeta;
+			}
+		}
+		return null;
+	}
+	
+	
+	public static CorpoCeleste getCorpoFromCodice(SistemaStellare ss, String codice) {
+		Stella stella = ss.getStella();
+		for(Pianeta pianeta : stella.getPianeti()) {
+			if(pianeta.getCodice().equals(codice)) return pianeta;
+			for(Satellite satellite : pianeta.getSatelliti()) {
+				if(satellite.getCodice().equals(codice)) return satellite;
+			}
+		}
+		return null;
+	}
+	
 }
