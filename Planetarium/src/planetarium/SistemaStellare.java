@@ -1,6 +1,6 @@
 package planetarium;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 public class SistemaStellare {
 	String nome;
@@ -146,19 +146,43 @@ public class SistemaStellare {
 		if(SistemaStellare.presenteCorpo(this, partenza) && SistemaStellare.presenteCorpo(this, arrivo)) {
 			if(partenza.equals(arrivo)) return "Sono lo stesso corpo";
 		} else return "Almeno uno dei 2 codici non esiste";
-		
-		rotta = rotta.concat(partenza + " > ");
 		CorpoCeleste nextHopPartenza = CorpoCeleste.getCorpoFromCodice(ss, partenza);
-		LinkedList<CorpoCeleste> parentPartenza = new LinkedList<CorpoCeleste>();
+		ArrayList<CorpoCeleste> parentPartenza = new ArrayList<CorpoCeleste>();
 		do {
 			//System.out.println(nextHopPartenza.getCodice());
 			parentPartenza.add(nextHopPartenza);
 			nextHopPartenza = nextHopPartenza.getParent(ss);
-			
 		} while(nextHopPartenza != null);
+
+		CorpoCeleste nextHopArrivo = CorpoCeleste.getCorpoFromCodice(ss, arrivo);
+		ArrayList<CorpoCeleste> parentArrivo = new ArrayList<CorpoCeleste>();
+		do {
+			//System.out.println(nextHopArrivo.getCodice());
+			parentArrivo.add(nextHopArrivo);
+			nextHopArrivo = nextHopArrivo.getParent(ss);
+		} while(nextHopArrivo != null);
 		
-		//for(CorpoCeleste corpi : parentPartenza) System.out.println(corpi.getCodice());
 		
+		int posIncontroPartenza = 0;
+		int posIncontroArrivo = 0;
+		ricercaCorrispondenza:
+		for(CorpoCeleste ramoPartenza : parentPartenza) {
+			posIncontroArrivo = 0;
+			for(CorpoCeleste ramoArrivo : parentArrivo) {
+				if(ramoPartenza.equals(ramoArrivo)) break ricercaCorrispondenza;
+				posIncontroArrivo++;
+			}
+			posIncontroPartenza++;
+		}
+		
+		rotta = rotta.concat(parentPartenza.get(0).getCodice());
+		for(int i=1; i<posIncontroPartenza; i++) {
+			rotta = rotta.concat(" > " + parentPartenza.get(i).getCodice());
+		}
+		
+		for(int i=posIncontroArrivo; i>=0; i--) {
+			rotta = rotta.concat(" > " + parentArrivo.get(i).getCodice());
+		}
 		
 		return rotta; //cacaminchia
 	}
