@@ -173,13 +173,13 @@ public class SistemaStellare {
 			posIncontroPartenza++;
 		}
 		
-		rotta = rotta.concat(parentPartenza.get(0).getCodice());
+		rotta = rotta.concat(parentPartenza.get(0).getNome() + "(Codice: "+parentPartenza.get(0).getCodice()+")");
 		for(int i=1; i<posIncontroPartenza; i++) {
-			rotta = rotta.concat(" > " + parentPartenza.get(i).getCodice());
+			rotta = rotta.concat(" > " +parentPartenza.get(i).getNome() + "(Codice: "+parentPartenza.get(i).getCodice()+")");
 		}
 		
 		for(int i=posIncontroArrivo; i>=0; i--) {
-			rotta = rotta.concat(" > " + parentArrivo.get(i).getCodice());
+			rotta = rotta.concat(" > " + parentArrivo.get(i).getNome() + "(Codice: "+parentArrivo.get(i).getCodice()+")");
 		}
 		
 		return rotta;
