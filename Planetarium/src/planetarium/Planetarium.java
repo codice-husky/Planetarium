@@ -8,20 +8,20 @@ class InputData {
 	Punto coordinate;
 	
 	InputData(String testo, Scanner sc) {
-		System.out.println("Inserisci il nome del"+testo+": ");
+		System.out.print("Inserisci il nome del"+testo+": ");
 		nome = sc.nextLine();
 		
-		System.out.println("Vuoi assegnare un codice manualmente? S/[N]: ");
+		System.out.print("Vuoi assegnare un codice manualmente? S/[N]: ");
 		boolean codiceMan = sc.nextLine().equals("S")? true : false;
 		if(codiceMan) {
-			System.out.println("Inserisci il codice del"+testo+": ");
+			System.out.print("Inserisci il codice del"+testo+": ");
 			codice = sc.nextLine();
 		} else codice = "SRND" + Math.floor(Math.random()*100000);
 		
-		System.out.println("Inserisci il peso del "+testo +": ");
+		System.out.print("Inserisci il peso del "+testo +": ");
 		peso = Integer.parseInt(sc.nextLine());
 		
-		System.out.println("Inserisci le coordinate del"+ testo+ " (x y): ");
+		System.out.print("Inserisci le coordinate del"+ testo+ " (x y): ");
 		int coordX = sc.nextInt();
 		int coordY = sc.nextInt();
 		sc.nextLine();
@@ -48,10 +48,10 @@ public class Planetarium {
 		String cmnd;
 		System.out.println("Digita aiuto per ricevere aiuto");
 		boolean end = false;
-		while(end) {
+		while(end == false) {
 			System.out.print("Che cosa vuoi fare? ");
 			cmnd = sc.nextLine();
-			switch(cmnd) {
+			if(ss.getStella()!=null) switch(cmnd) {
 			case "aiuto":
 				aiuto();
 				break;
@@ -78,11 +78,26 @@ public class Planetarium {
 			case "scheda corpo":
 				schedaCorpo(ss);
 				break;
-			case "calcola rotta":
-				calcolaRotta(ss);
+			case "collidono":
+				collisione(ss);
+				break;
+			case "rimuovi stella":
+				rStella(ss);
+				break;
+			case "rimuovi pianeta":
+				rPianeta(ss);
+				break;
+			case "esci":
+				esci();
+				end = !end;
+				break;
 			default:
 				System.out.println("Comando non riconosciuto!");
 				break;
+			} else {
+				System.out.println("Non esiste una stella! \n"
+						+ "Aggiungine una");
+				aggiungiStella(ss);
 			}
 		}
 		
@@ -115,7 +130,7 @@ public class Planetarium {
 			return false;
 		} else {		
 			InputData inputPianeta = new InputData(" pianeta", sc);
-			while(SistemaStellare.presenteCorpo(ss, inputPianeta.codice)==true) {
+			while(ss.presenteCorpo(inputPianeta.codice)==true) {
 				System.out.println("\nE' gia presente corpo celeste con quel codice!\n");
 				inputPianeta = new InputData(" pianeta", sc);
 			}
@@ -141,7 +156,7 @@ public class Planetarium {
 			}
 			
 			InputData inputSatellite = new InputData(" satellite", sc);			
-			while(SistemaStellare.presenteCorpo(ss, inputSatellite.codice) == true) {
+			while(ss.presenteCorpo(inputSatellite.codice) == true) {
 				System.out.println("\nE' gia presente corpo celeste con quel codice!\n");
 				inputSatellite = new InputData(" pianeta", sc);
 			}	
@@ -157,17 +172,17 @@ public class Planetarium {
 	public static void printSistema(SistemaStellare ss) {
 		System.out.println("Stella "+ ss.stella.getNome());
 		for(Pianeta pianeta: ss.stella.getPianeti()) {
-			System.out.println(String.format("  Pianeta: %s(%s)", 
+			System.out.println(String.format("  Pianeta: %s(codice: %s)", 
 					pianeta.getNome(),pianeta.getCodice()));
 			for(Satellite satellite: pianeta.getSatelliti()) {
-				System.out.println(String.format("    Satellite: %s(%s)", 
+				System.out.println(String.format("    Satellite: %s(codice: %s)", 
 						satellite.getNome(),satellite.getCodice()));
 			}
 		}
 	}
 	
 	public static void centroMassa(SistemaStellare ss) {
-		Punto centro = ss.calcolaMassa();
+		Punto centro = ss.calcolaCentroMassa();
 		String x = ""+(Math.round(centro.getX()*1000.0)/1000.0);
 		String y = ""+(Math.round(centro.getY()*1000.0)/1000.0);
 		System.out.println(String.format("Le cordinate del centro di massa sono (%s, %s)",x,y));
@@ -175,7 +190,7 @@ public class Planetarium {
 	
 	public static void schedaCorpo(SistemaStellare ss) {
 		String codice = getCodice();
-		if(SistemaStellare.presenteCorpo(ss, codice)) {
+		if(ss.presenteCorpo(codice)) {
 			
 		}else {
 			System.out.println("Non esiste un corpo celeste con quel nome");
@@ -189,14 +204,123 @@ public class Planetarium {
 		else System.out.println("I due corpi non collideranno");
 	}
 	
-	public static void calcolaRotta(SistemaStellare ss) {
-		System.out.println("Inserisci il codice del corpo celeste di partenza: ");
-		String cPartenza = sc.nextLine();
+	public static void rStella(SistemaStellare ss) {
+		String risposta = "";
+		while(!risposta.equals("Si")&& !risposta.equals("No")) {
+			System.out.println("Se elimini la stella tutti i pianeti e i\n"
+				+ "satelliti verranno rimossi!\n"
+				+ "Sei sicuro? (Si/No)");
+	    	risposta = sc.nextLine();
+		}
+		if(risposta.equals("Si")) {
+			ss.rimuoviStella();	
+		}else {
+			System.out.println("La stella "+ss.getStella().getNome()+" non è stata rimossa");
+		}
+	}
+	
+	public static void rPianeta(SistemaStellare ss) {
+		String codice = getCodice(),risposta = "";
+		Pianeta pianeta = ss.getStella().cercaPianeta(codice);
+		while(!risposta.equals("Si")&& !risposta.equals("No")) {
+			System.out.println("Se elimini il sistema i satelliti verranno rimossi!\n"
+				+ "Sei sicuro? (Si/No)");
+		   	risposta = sc.nextLine();
+		}
+		if(risposta.equals("Si")) {
+				boolean esito = ss.getStella().rimuoviPianeti(codice);
+				if(esito) {
+					System.out.println("Pianeta rimosso con successo");
+				}else {
+					System.out.println("Non esiste un pianeta con quel codice");
+				}
+			}else {
+				System.out.println("Il pianeta con codice "+codice+" non è stata rimosso");
+			}
 		
-		System.out.println("Inserisci il codice del corpo celeste di arrivo: ");
-		String cArrivo = sc.nextLine();
-		
-		
-		System.out.println("Rotta: " + ss.rotta(cPartenza, cArrivo, ss));
+	}
+	public static void rSatellite(SistemaStellare ss) {
+		System.out.println("Inserisci il codice del pianeta del satellite: ");
+		String codiceA = sc.nextLine();
+		System.out.println("Inserisci il codice del satellite: ");
+		String codiceB = sc.nextLine();
+		Pianeta pianeta = ss.getStella().cercaPianeta(codiceA);
+		if(pianeta != null) {
+			boolean ris = pianeta.rimuoviSatelliti(codiceB);
+			if(ris) {
+				System.out.println("Satellite rimosso con successo!");
+			}else {
+				System.out.println("Non esiste un satellite con quel nome");
+			}
+		}	
+	}
+	
+	public static void esci() {
+		System.out.println(",%  #% (%                                                                                                  @   %(                                @*  @.    \r\n" + 
+				"  ,&@@&.(( (%    (/(%/  #%. ,##.   /%(#. %%. #%/  .#%/ /%(  %,#% (%,  .#%/     #%/   ,##,  %,#%*      (%@  .#%/      .##. .%% %/%  /%#. .%*% %.#@@@%.  \r\n" + 
+				"   %(& ## (%    ##  ,@ @,  &  ## @,  @, @,  ,  & ,&  (&  ,@ @,  &(  @, ,  ,&    /&  ## @,  *# @,  &   ,@   @ .,  &    &  &,.@   @  .@   %..@   @..@ &*   \r\n" + 
+				"        ## (%    ##  .@ @,  @.  & @.  @, @. .@. *& ,&  (%  ,@ @.  &/  @,@. ,@    /&  ## @.  .% @.  &/   *&   @ /&. *&    @,    .@   @  *&   (,.@   @.        \r\n" + 
+				"        ## (%    #%&@&  @,   #@@/   &@&@, @,  (@@(& ,@  (%  ,@ @,  &/  @, %@@(@    /&  ##  #@@#  @,  &/    ,@@%@  %@@(&     (@@( .@   @   .&@@/ .@   @,        \r\n" + 
+				"                 ##                #%,(&                                                                                                                       \r\n" + 
+				"                                                                                                                                                               \r\n" + 
+				"                                                                                                                                                               \r\n" + 
+				"                                                                                                                                                               \r\n" + 
+				"                                                                                                                                                               \r\n" + 
+				"                                                                                                                                                               \r\n" + 
+				"   ,@                                                                                                                                                          \r\n" + 
+				"   ,@  &%*%@     ((                                                                                                                                            \r\n" + 
+				"   ,@ ,#   #%                                                                                                                                                  \r\n" + 
+				"   ,@ .&   &/                                                                                                                                                  \r\n" + 
+				"   .%   (%(      ((                                                                                                                                            \r\n" + 
+				"                                                                                                                                                               \r\n" + 
+				"                                                                                                                                                               \r\n" + 
+				"                                                                                                                                                               \r\n" + 
+				".................,,,........,,,...              .....,,,,,..........................................................,,.........................................\r\n" + 
+				"################%%%#(//////(#%&%(,,,,,,,,,,,,,,,,,/(%%%%##########################################################%%(///(((((///////(((((####(((/*,,,,,,,,,\r\n" + 
+				"################%%#(////////(#%%#/,,,,,,,,,,,,,,,,,,,,(############################################################%%#(//((/(((/(((((#####((/*,,,,,,,,,,,,,\r\n" + 
+				"###############%%#((////////(((%#(/,,,,,,,,,,,,,,,,,,,,,/(##########################################################%%#(/(((((((((###((/*,,,,,,,,,,,,,,,,,,\r\n" + 
+				"##############%%%#(/(((((((((((###(/,,,,,,,,,,,,,,,,,,,,,,/(#%%######################################################%%(((((((##((//**,,,,,,,,,,,,,,,,,,,,,,,\r\n" + 
+				"##############%%#((((((((((((((((##(/*,,,,,,,,,,,,,,,,,,,,,,,/(##%###################################################%%#####((/*,,,,,,,,,,,,,,,,,,,,,,,,,,*\r\n" + 
+				"#############%%%##############((((###(/,,,,,,,,,,,,,,,,,,,,,,,,/(####################((############################%%##((//,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,*\r\n" + 
+				"############%%%################((((###(/,,,,,,,,,,,,,,,,,,,,,,,,,,/(######################%%%%%#%%%%%%%%%%%%%%%####((/*,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,/\r\n" + 
+				"###########%%%%#########################(/,,,,,,,,,,,,,,,,,,,,,,,,,,,/(###############((((((((//(//////////////**,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,/(\r\n" + 
+				"##########%%&%###########%%###############(/,,,,,,,,,,,,,,,,,,,,,,,,,,,,****,*,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,**/(#\r\n" + 
+				"##########%&%%##########################%%#(/,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,*///(((\r\n" + 
+				"#########%%&%%##########################%%%%#(/,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,**/(((((((\r\n" + 
+				"#########%&%%############################%%%%%#/,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,/((#######(\r\n" + 
+				"########%&%%#######%%%%###################%%%%%#(/,,,,*,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,*/((###########\r\n" + 
+				"#######%%&%%#######%%%%%%%###########%########%%%#((////*,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,**/(##############\r\n" + 
+				"#######%&%%########%%%%%%%%%%%%%%%%%%%%%%%%%###%%%%%##(/*,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,*,,,,//(################\r\n" + 
+				"#######%%%%#######%%%%%%%%%%%%%%%%%%%%%%%%%%######%%%#(,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,*/*//((##################\r\n" + 
+				"######%&%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%##%%%#(,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,*/(#######################\r\n" + 
+				"#####%%&%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%&%%%%%#%%#(,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,*(#######################\r\n" + 
+				"####%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%&&&&&&%%%%%%%#/,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,/(######################\r\n" + 
+				"####%&&%%%%%%%%%%%%%%%%%%%%%%%%%%%%%&&&&&&&%%%#%%%#(,,,,,,,,,,*//,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,*///((//,,,,,,,,,,,,,,,,/(#####################\r\n" + 
+				"####%&%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%&&&&&&%%%##%%%(/,,,,,,,,////(#%#(/,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,*////#%%%#(,,,,,,,,,,,,,,,,/(####################\r\n" + 
+				"###%&&%##%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%####%%#(,,,,,,,,,/(/*/(%&%#/,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,*//,(%%%%#/,,,,,,,,,,,,,,,,*/########((((((((((((\r\n" + 
+				"##%&&%%##%%%%%%%%%%%%%%%%%%%%%%#%%%%%##########%%(,,,,,,,,,/##((#%&&(,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,/(##(#%&&&%#/,,,,,,,,,,,,,,,,,*(#%###((((((((((((((\r\n" + 
+				"#%%&&%%%%%%%%%%%%%%%%%%%%%%%%%%##%############%%#(,,,,,,,,,/#%%%&&&&&%(,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,*(#%%&&&&&%#/,,,,,,,,,,,,,,,,,,/(%%#(((((((((((((((\r\n" + 
+				"#%&&%%%%%%%%%%&&&&&&&&&&&&&&&%%###############%%#/,,,,,,,,,,,,,(#%%%%%%#/,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,*/(#%%%%%#(,,,,,,,,,,,,,,,,,,/###(((((((((((((((\r\n" + 
+				"%&&&%%%%%%%%&&&&&&&&&&&&&&&&&&%%%############%%#(,,,,,,,,,,,,,,///////,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,//((//,,,,,,,,,,,,,,,,,,,,,*(##(((((((((((((((\r\n" + 
+				"%&&%%%%%%%%&&&&&&&&&&&&&&&&&&&%%%#%##########%%(/,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,///((//*,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,*/##(((((((((((((((\r\n" + 
+				"&&%%##%%%%%%&&&&&&&&&&&&&&&&&&%%#############%#(*,,,,,,,,,,,,,,,,,,,,,,,,,,,,,/(#%%%#(/,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,/(#(((((((((((((((\r\n" + 
+				"&%%####%%%%%%&&&&&&&&&&&&&&&&%%%############%%%###(((//*,,,,,,,,,,,,,,,,,,,,,,,,,,//(//,,,,,,,,,,,,,,,,,,,,,,,,,,,,****,,,,,,,,*(##((((((((((((((\r\n" + 
+				"%%#####%%%%%%%%%%&%%%%%&%%&%%%%############%&&&%%%%%%##((/,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,//((((((((((/*,,,,,,/##((((((((((((((\r\n" + 
+				"%#######%%%%%%%%%##########################%%%##(((((###(/*,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,/(((((((((((((/,,,,,,*(##(((((((((((((\r\n" + 
+				"%########################((((((((((#######%&%%#(((((((((#(/,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,/((((((((((((((/,,,,,,/###((((((((((((\r\n" + 
+				"%%##########################((((#########%&&&%#(((((((((((/,,,,,,,,,,,,,,,,,,,,,**////*,,,,,,,,,,,,,,,,,,,,,(((((((((((((##(,,,,,,(###(((((((((((\r\n" + 
+				"%%###########################((((((######%&&%%#((((((((((/*,,,,,,,,,,,,,,,,,,,//(##%%%####((((//,,,,,,,,,,,,,,,,,,(((((((((((((#((/,,,,,,*/(###((((####(#\r\n" + 
+				"%%###################%%%%################%&%%####((((((((/,,,,,,,,,,,,,,,,,,,/(#%%%##(//////((((/*,,,,,,,,,,,,,,,,,/((((((((((((((/,,,,,,,,(#############\r\n" + 
+				"############%%#%%%%%%%%%%%%%############%%%%#((#######((/,,,,,,,,,,,,,,,,,,,,/#%%#(///**//((/,,,,,,,,,,,,,,,,,,/((((((((((((/,,,,,,,,,,/(#######(####\r\n" + 
+				"((###########%#%%%%%%%%%%%%%%%%%%%%%#%%%%%%#/*//////*,,,,,,,,,,,,,,,,,,,,,,/(##(//***//((/,,,,,,,,,,,,,,,,,,,/////((((///*,,,,,,,,,,/###((((((((#\r\n" + 
+				"(###########%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%#(,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,(##(/***//((/,,,,,,,,,,,,,,,,,,,,,***,,,,,,,,,,,,,,,*(##(((((((((\r\n" + 
+				"(###########%%%%%%%%#%%%####%#%%%%%%%%%%%%%%#/,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,/((((/***//((/,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,/##(((((((((\r\n" + 
+				"(###########%%%%%%%%#%%#######%%%##%####%%%%%(/,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,//((((////////(((//,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,/(##((((((((\r\n" + 
+				"(###########################################%#(*,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,/(((((((((((/,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,/###((((###\r\n" + 
+				"#########(((((((((((((((((((((((((((((((((((###(/,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,****,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,*/(#########\r\n" + 
+				"#%%%%%%##((((((((((((((((((((((((((((((((((((###(,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,*(#########\r\n" + 
+				"%%%%%%%######(((((((((((((((((((((((((((((#######/*,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,/#########\r\n" + 
+				"%%%%%%%%###########((((((((((((((((((((###########/,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,(########\r\n" + 
+				"%%%%%%%%%%%%%%%%%%#######(((((((((((((((##########(/,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,(########");
 	}
 }

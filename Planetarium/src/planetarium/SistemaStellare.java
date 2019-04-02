@@ -31,7 +31,7 @@ public class SistemaStellare {
 	/** 
      * @return 
      */
-	public Punto calcolaMassa(){
+	public Punto calcolaCentroMassa(){
 	    int massa = stella.getPeso();
 	    Punto punto = stella.getCord();
 	    double x = (punto.getX() * stella.getPeso());
@@ -61,20 +61,20 @@ public class SistemaStellare {
      */
 	public boolean collisione(String codiceA,String codiceB) {
 
-		double vA[] = SistemaStellare.getDistanza(this, codiceA);
-		double vB[] = SistemaStellare.getDistanza(this, codiceB);
+		double vA[] = getDistanza(codiceA);
+		double vB[] = getDistanza(codiceB);
 		double d = vA[0];
 		double e = vA[1];
 		double d0 = vB[0];
 		double e0 = vB[1];
 		if(codiceA.equals(codiceB)) return false;
-		if((returnClass(codiceA).equals("stella")&& returnClass(codiceB).equals("pianeta"))|| //stella e pianeta
-			returnClass(codiceA).equals("pianeta")&& returnClass(codiceB).equals("stella")) {
+		if((getCorpoDaCodice(codiceA).equals("stella")&& getCorpoDaCodice(codiceB).equals("pianeta"))|| //stella e pianeta
+				getCorpoDaCodice(codiceA).equals("pianeta")&& getCorpoDaCodice(codiceB).equals("stella")) {
 				return false;
-		}else if(returnClass(codiceA).equals("pianeta")&&returnClass(codiceB).equals("pianeta")) {
+		}else if(getCorpoDaCodice(codiceA).equals("pianeta") && getCorpoDaCodice(codiceB).equals("pianeta")) {
 			return false; 
 		}else {
-			if(returnClass(codiceA).equals("pianeta") && returnClass(codiceB).equals("satellite")) { //satB appartenente 
+			if(getCorpoDaCodice(codiceA).equals("pianeta") && getCorpoDaCodice(codiceB).equals("satellite")) { //satB appartenente 
 				for(Pianeta pianeta: stella.getPianeti()) {										   //pianetaA
 					if(pianeta.getCodice().equals(codiceA)) {
 						if(pianeta.cercaSatellite(codiceB)!=null) {
@@ -83,7 +83,7 @@ public class SistemaStellare {
 					}
 				}
 			}
-			if(returnClass(codiceA).equals("satellite")&&returnClass(codiceB).equals("pianeta")) {//satA appartenente 
+			if(getCorpoDaCodice(codiceA).equals("satellite") && getCorpoDaCodice(codiceB).equals("pianeta")) {//satA appartenente 
 				for(Pianeta pianeta: stella.getPianeti()) {										   //pianetaB
 					if(pianeta.getCodice().equals(codiceB)) {
 						if(pianeta.cercaSatellite(codiceA)!=null) {
@@ -92,7 +92,7 @@ public class SistemaStellare {
 					}
 				}	
 			}
-			if(returnClass(codiceA).equals("satellite")&&returnClass(codiceB).equals("satellite")) {
+			if(getCorpoDaCodice(codiceA).equals("satellite")&&getCorpoDaCodice(codiceB).equals("satellite")) {
 				for(Pianeta pianeta: stella.getPianeti()) {
 					boolean a = false, b = false;
 					for(Satellite satellite: pianeta.getSatelliti()) {
@@ -124,7 +124,7 @@ public class SistemaStellare {
 	
 	}
 	
-	public String returnClass(String codice) {
+	public String getCorpoDaCodice(String codice) {
 		if(stella.getCodice().equals(codice)) {
 			return "stella";
 		}else {
@@ -143,7 +143,7 @@ public class SistemaStellare {
 	}
 	public String rotta(String partenza,String arrivo, SistemaStellare ss) {
 		String rotta = "";
-		if(SistemaStellare.presenteCorpo(this, partenza) && SistemaStellare.presenteCorpo(this, arrivo)) {
+		if(presenteCorpo(partenza) && presenteCorpo(arrivo)) {
 			if(partenza.equals(arrivo)) return "Sono lo stesso corpo";
 		} else return "Almeno uno dei 2 codici non esiste";
 		CorpoCeleste nextHopPartenza = CorpoCeleste.getCorpoFromCodice(ss, partenza);
@@ -190,8 +190,8 @@ public class SistemaStellare {
 	 * @param codice 
      * @return 
      */
-	public static boolean presenteCorpo(SistemaStellare ss, String codice) {
-		Stella stella = ss.getStella();
+	public boolean presenteCorpo(String codice) {
+		Stella stella = getStella();
 		if(stella.getCodice().equals(codice)) return true;
 		else {
 			for(Pianeta pianeta : stella.getPianeti()) {
@@ -236,12 +236,12 @@ public class SistemaStellare {
 		return perc;
 	}
 	
-	public static double[] getDistanza(SistemaStellare ss, String codice) {
-		Stella stella = ss.getStella();
+	public double[] getDistanza(String codice) {
+		Stella stella = getStella();
 		double[]c = new double[2];
 		double d = 0, e = 0;
 		boolean memo = false;
-		if(presenteCorpo(ss, codice)) {
+		if(presenteCorpo(codice)) {
 			for(Pianeta pianeta: stella.getPianeti()) {
 				if(pianeta.getCodice().equals(codice) || memo == true) break;
 				else {
