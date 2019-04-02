@@ -1,4 +1,3 @@
-  
 package planetarium;
 import java.util.Scanner;
 
@@ -85,8 +84,8 @@ public class Planetarium {
 			case "collisione":
 				collisione(ss);
 				break;
-			case "è presente":
-				presente(ss);
+			case "ricerca":
+				ricerca(ss);
 				break;
 			default:
 				System.out.println("Comando non riconosciuto!");
@@ -211,12 +210,20 @@ public class Planetarium {
 		
 		System.out.println("Rotta: " + ss.rotta(cPartenza, cArrivo, ss));
 	}
-	public static void presente(SistemaStellare ss) {
+	public static void ricerca(SistemaStellare ss) {
 		System.out.print("Inserire il codice del corpo: ");
 		String codice = sc.nextLine();
 		boolean ris = ss.presenteCorpo(codice);
 		if(ris) {
 			System.out.println(String.format("Il corpo con codice %s esite", codice));
+			if(ss.getCorpoDaCodice(codice).equals("satellite")) {
+				for(Pianeta pianeta:ss.getStella().getPianeti()) {
+					if(pianeta.cercaSatellite(codice) != null) {
+						System.out.println(String.format("Il satellite di codice %s "
+								+ "rotea intorno al pianeta %s",codice,pianeta.getNome()));
+					}
+				}
+			}
 		}else {
 			System.out.println(String.format("Il corpo con codice %s non esite", codice));
 		}
