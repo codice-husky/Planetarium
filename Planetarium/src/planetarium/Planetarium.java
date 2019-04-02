@@ -184,7 +184,14 @@ public class Planetarium {
 	public static void schedaCorpo(SistemaStellare ss) {
 		String codice = getCodice();
 		if(ss.presenteCorpo(codice)) {
-			
+			CorpoCeleste cc = CorpoCeleste.getCorpoFromCodice(ss, codice);
+			System.out.println(String.format("Nome corpo: %s\n"
+					+ "Codice corpo: %s\n"
+					+ "Peso: %d\n"
+					+ "Coordinate: (%f,%f)", cc.getNome(),
+											 cc.getCodice(),
+											 cc.getPeso(),
+											 cc.getCord().getX(),cc.getCord().getY()));
 		}else {
 			System.out.println("Non esiste un corpo celeste con quel nome");
 		}
