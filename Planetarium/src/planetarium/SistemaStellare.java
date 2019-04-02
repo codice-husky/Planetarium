@@ -68,13 +68,13 @@ public class SistemaStellare {
 		double d0 = vB[0];
 		double e0 = vB[1];
 		if(codiceA.equals(codiceB)) return false;
-		if((getCorpoDaCodice(codiceA).equals("stella")&& getCorpoDaCodice(codiceB).equals("pianeta"))|| //stella e pianeta
-				getCorpoDaCodice(codiceA).equals("pianeta")&& getCorpoDaCodice(codiceB).equals("stella")) {
+		if((getCorpoDaCodice(codiceA,"c").equals("stella")&& getCorpoDaCodice(codiceB,"c").equals("pianeta"))|| //stella e pianeta
+				getCorpoDaCodice(codiceA,"c").equals("pianeta")&& getCorpoDaCodice(codiceB,"c").equals("stella")) {
 				return false;
-		}else if(getCorpoDaCodice(codiceA).equals("pianeta") && getCorpoDaCodice(codiceB).equals("pianeta")) {
+		}else if(getCorpoDaCodice(codiceA,"c").equals("pianeta") && getCorpoDaCodice(codiceB,"c").equals("pianeta")) {
 			return false; 
 		}else {
-			if(getCorpoDaCodice(codiceA).equals("pianeta") && getCorpoDaCodice(codiceB).equals("satellite")) { //satB appartenente 
+			if(getCorpoDaCodice(codiceA,"c").equals("pianeta") && getCorpoDaCodice(codiceB,"c").equals("satellite")) { //satB appartenente 
 				for(Pianeta pianeta: stella.getPianeti()) {										   //pianetaA
 					if(pianeta.getCodice().equals(codiceA)) {
 						if(pianeta.cercaSatellite(codiceB)!=null) {
@@ -83,7 +83,7 @@ public class SistemaStellare {
 					}
 				}
 			}
-			if(getCorpoDaCodice(codiceA).equals("satellite") && getCorpoDaCodice(codiceB).equals("pianeta")) {//satA appartenente 
+			if(getCorpoDaCodice(codiceA,"c").equals("satellite") && getCorpoDaCodice(codiceB,"c").equals("pianeta")) {//satA appartenente 
 				for(Pianeta pianeta: stella.getPianeti()) {										   //pianetaB
 					if(pianeta.getCodice().equals(codiceB)) {
 						if(pianeta.cercaSatellite(codiceA)!=null) {
@@ -92,7 +92,7 @@ public class SistemaStellare {
 					}
 				}	
 			}
-			if(getCorpoDaCodice(codiceA).equals("satellite")&&getCorpoDaCodice(codiceB).equals("satellite")) {
+			if(getCorpoDaCodice(codiceA,"c").equals("satellite")&&getCorpoDaCodice(codiceB,"c").equals("satellite")) {
 				for(Pianeta pianeta: stella.getPianeti()) {
 					boolean a = false, b = false;
 					for(Satellite satellite: pianeta.getSatelliti()) {
@@ -124,7 +124,7 @@ public class SistemaStellare {
 	
 	}
 	
-	public String getCorpoDaCodice(String codice) {
+	public String getCorpoDaCodice(String codice,String tipo) {
 		if(stella.getCodice().equals(codice)) {
 			return "stella";
 		}else {
@@ -143,7 +143,7 @@ public class SistemaStellare {
 	}
 	public String rotta(String partenza,String arrivo, SistemaStellare ss) {
 		String rotta = "";
-		if(presenteCorpo(partenza) && presenteCorpo(arrivo)) {
+		if(presenteCorpoCodice(partenza) && presenteCorpoCodice(arrivo)) {
 			if(partenza.equals(arrivo)) return "Sono lo stesso corpo";
 		} else return "Almeno uno dei 2 codici non esiste";
 		CorpoCeleste nextHopPartenza = CorpoCeleste.getCorpoFromCodice(ss, partenza);
@@ -194,7 +194,7 @@ public class SistemaStellare {
 	 * @param codice 
      * @return 
      */
-	public boolean presenteCorpo(String codice) {
+	public boolean presenteCorpoCodice(String codice) {
 		Stella stella = getStella();
 		if(stella.getCodice().equals(codice)) return true;
 		else {
@@ -245,7 +245,7 @@ public class SistemaStellare {
 		double[]c = new double[2];
 		double d = 0, e = 0;
 		boolean memo = false;
-		if(presenteCorpo(codice)) {
+		if(presenteCorpoCodice(codice)) {
 			for(Pianeta pianeta: stella.getPianeti()) {
 				if(pianeta.getCodice().equals(codice) || memo == true) break;
 				else {
@@ -267,5 +267,28 @@ public class SistemaStellare {
 		c[0]=d;
 		c[1] =e;
 		return c;
+	}
+	public boolean presenteCorpoNome(String nome) {
+		if(stella.getNome().equals(nome)) return true;
+		for(Pianeta pianeta: stella.getPianeti()) {
+			if(pianeta.getNome().equals(nome)) return true;
+			for(Satellite satellite: pianeta.getSatelliti()) {
+				if(satellite.getNome().equals(nome)) return true;
+			}
+		}
+		return false;
+	}
+	public boolean presenteCorpoPunto(Punto punto) {
+		if(stella.getCord().getX() == punto.getX() &&
+		   stella.getCord().getY() == punto.getY()) return true;
+		for(Pianeta pianeta: stella.getPianeti()) {
+			if(pianeta.getCord().getX() == punto.getX() &&
+					   pianeta.getCord().getY() == punto.getY()) return true;
+			for(Satellite satellite: pianeta.getSatelliti()) {
+				if(satellite.getCord().getX() == punto.getX() &&
+						   satellite.getCord().getY() == punto.getY()) return true;
+			}
+		}
+		return false;
 	}
 }
