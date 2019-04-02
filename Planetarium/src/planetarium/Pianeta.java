@@ -69,12 +69,4 @@ public class Pianeta extends CorpoCeleste {
     	return null;
     }
     
-    public Stella getParentStella(SistemaStellare ss) {
-		Stella stella = ss.getStella();
-		for(Pianeta pianeta : stella.getPianeti()) {
-			if(pianeta.getCodice().equals(codice)) return stella;
-		}
-		return null;
-	}
-    
 }
