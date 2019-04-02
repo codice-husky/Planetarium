@@ -96,10 +96,7 @@ public class Planetarium {
 		
 		sc.close();
 	}
-	/**
-     * @return
-     */
-	
+
 	public static void aiuto() {
 		System.out.println("aiuto: per ricevere aiuto");
 		System.out.println("aggiungi stella: per aggiungere una nuova stella");
