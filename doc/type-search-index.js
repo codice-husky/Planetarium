@@ -1,1 +1,1 @@
-typeSearchIndex = [{"l":"All Classes","url":"allclasses-index.html"},{"p":"planetarium","l":"CorpoCeleste"},{"p":"planetarium","l":"Pianeta"},{"p":"planetarium","l":"Planetarium"},{"p":"planetarium","l":"Punto"},{"p":"planetarium","l":"Satellite"},{"p":"planetarium","l":"SistemaStellare"},{"p":"planetarium","l":"Stella"}]
+typeSearchIndex = [{"l":"All Classes","url":"allclasses-index.html"},{"p":"planetarium","l":"Pianeta"}]

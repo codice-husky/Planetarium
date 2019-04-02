@@ -15,7 +15,7 @@ public class Stella extends CorpoCeleste{
 	 * @param _nome Nome della stella
 	 * @param _codice Codice univoco della stella
 	 * @param _peso Peso della stella
-	 * @param _punto Punto della stella
+	 * @param _punto Coordinate della stella
 	 */
 	public Stella(String _nome, String _codice, int _peso, Punto _punto) {
 		super(_nome, _codice, _peso, _punto);
