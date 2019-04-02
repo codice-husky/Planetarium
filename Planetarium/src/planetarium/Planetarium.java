@@ -48,7 +48,7 @@ public class Planetarium {
 		//--------------------------------------
 		String cmnd;
 		System.out.println("Digita aiuto per ricevere aiuto");
-		boolean end = false;
+		boolean end = true;
 		while(end) {
 			System.out.print("Che cosa vuoi fare? ");
 			cmnd = sc.nextLine();
@@ -81,6 +81,13 @@ public class Planetarium {
 				break;
 			case "calcola rotta":
 				calcolaRotta(ss);
+				break;
+			case "collisione":
+				collisione(ss);
+				break;
+			case "è presente":
+				presente(ss);
+				break;
 			default:
 				System.out.println("Comando non riconosciuto!");
 				break;
@@ -199,5 +206,15 @@ public class Planetarium {
 		
 		
 		System.out.println("Rotta: " + ss.rotta(cPartenza, cArrivo, ss));
+	}
+	public static void presente(SistemaStellare ss) {
+		System.out.print("Inserire il codice del corpo: ");
+		String codice = sc.nextLine();
+		boolean ris = ss.presenteCorpo(codice);
+		if(ris) {
+			System.out.println(String.format("Il corpo con codice %s esite", codice));
+		}else {
+			System.out.println(String.format("Il corpo con codice %s non esite", codice));
+		}
 	}
 }
