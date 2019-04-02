@@ -1,14 +1,21 @@
 package planetarium;
 import java.util.Scanner;
 
+/**
+ * La classe InputData si occupa dell'inserimento dei nuovi corpi celesti 
+ */
 class InputData {
 	String nome;
 	String codice;
 	int peso;
 	Punto coordinate;
 	/**
-	 * 
-	 * 
+	 * Il costruttore setta i vari attributi necessari per la creazione
+	 * di un nuovo corpo celeste
+	 * @param testo Serve per visualizzare nella console se è una stella,
+	 *              un pianeta o un satellite
+	 * @param sc    E' l'oggetto di classe Scanner per gli input da tastiera  
+	 * @param ss    E' il sistema stellare di riferimento
 	 */
 	InputData(String testo, Scanner sc,SistemaStellare ss) {
 		boolean c = false; 
