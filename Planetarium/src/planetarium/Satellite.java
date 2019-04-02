@@ -13,5 +13,3 @@ public class Satellite extends CorpoCeleste{
 	}
 	
 }
-
-//commento qualsiasi
