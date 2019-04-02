@@ -68,13 +68,13 @@ public class SistemaStellare {
 		double d0 = vB[0];
 		double e0 = vB[1];
 		if(codiceA.equals(codiceB)) return false;
-		if((getCorpoDaCodice(codiceA,"c").equals("stella")&& getCorpoDaCodice(codiceB,"c").equals("pianeta"))|| //stella e pianeta
-				getCorpoDaCodice(codiceA,"c").equals("pianeta")&& getCorpoDaCodice(codiceB,"c").equals("stella")) {
+		if((getCorpoDaCodice(codiceA).equals("stella")&& getCorpoDaCodice(codiceB).equals("pianeta"))|| //stella e pianeta
+				getCorpoDaCodice(codiceA).equals("pianeta")&& getCorpoDaCodice(codiceB).equals("stella")) {
 				return false;
-		}else if(getCorpoDaCodice(codiceA,"c").equals("pianeta") && getCorpoDaCodice(codiceB,"c").equals("pianeta")) {
+		}else if(getCorpoDaCodice(codiceA).equals("pianeta") && getCorpoDaCodice(codiceB).equals("pianeta")) {
 			return false; 
 		}else {
-			if(getCorpoDaCodice(codiceA,"c").equals("pianeta") && getCorpoDaCodice(codiceB,"c").equals("satellite")) { //satB appartenente 
+			if(getCorpoDaCodice(codiceA).equals("pianeta") && getCorpoDaCodice(codiceB).equals("satellite")) { //satB appartenente 
 				for(Pianeta pianeta: stella.getPianeti()) {										   //pianetaA
 					if(pianeta.getCodice().equals(codiceA)) {
 						if(pianeta.cercaSatellite(codiceB)!=null) {
@@ -83,7 +83,7 @@ public class SistemaStellare {
 					}
 				}
 			}
-			if(getCorpoDaCodice(codiceA,"c").equals("satellite") && getCorpoDaCodice(codiceB,"c").equals("pianeta")) {//satA appartenente 
+			if(getCorpoDaCodice(codiceA).equals("satellite") && getCorpoDaCodice(codiceB).equals("pianeta")) {//satA appartenente 
 				for(Pianeta pianeta: stella.getPianeti()) {										   //pianetaB
 					if(pianeta.getCodice().equals(codiceB)) {
 						if(pianeta.cercaSatellite(codiceA)!=null) {
@@ -92,7 +92,7 @@ public class SistemaStellare {
 					}
 				}	
 			}
-			if(getCorpoDaCodice(codiceA,"c").equals("satellite")&&getCorpoDaCodice(codiceB,"c").equals("satellite")) {
+			if(getCorpoDaCodice(codiceA).equals("satellite")&&getCorpoDaCodice(codiceB).equals("satellite")) {
 				for(Pianeta pianeta: stella.getPianeti()) {
 					boolean a = false, b = false;
 					for(Satellite satellite: pianeta.getSatelliti()) {
@@ -124,7 +124,7 @@ public class SistemaStellare {
 	
 	}
 	
-	public String getCorpoDaCodice(String codice,String tipo) {
+	public String getCorpoDaCodice(String codice) {
 		if(stella.getCodice().equals(codice)) {
 			return "stella";
 		}else {
