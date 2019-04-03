@@ -30,7 +30,8 @@ public class SistemaStellare {
 	}
 
 	/** 
-     * @return 
+	 * Calcola il centro di massa di un sistema stellare
+     * @return Coordinate del centro di massa
      */
 	public Punto calcolaCentroMassa(){
 	    int massa = stella.getPeso();
@@ -56,9 +57,10 @@ public class SistemaStellare {
 	    return centroMassa;
 	}
 	/** 
-     * @param codiceA
-     * @param codiceB
-     * @return 
+	 * Controlla se due corpi celesti collidono
+     * @param codiceA Codice del primo corpo celeste
+     * @param codiceB Codice del secondo corpo celeste
+     * @return true se collidono, false se non collidono
      */
 	public boolean collisione(String codiceA,String codiceB) {
 
@@ -142,6 +144,14 @@ public class SistemaStellare {
 		}
 		return "";
 	}
+	
+	/**
+	 * Calcola la rotta necessaria per muoversi da un pianeta all'altro
+	 * @param partenza Codice del pianeta di partenza
+	 * @param arrivo Codice del pianeta di arrivo
+	 * @param ss Sistema stellare di riferimento
+	 * @return Stringa contenente percorso e distanza
+	 */
 	public String rotta(String partenza,String arrivo, SistemaStellare ss) {
 		String rotta = "";
 		if(presenteCorpoCodice(partenza) && presenteCorpoCodice(arrivo)) {
@@ -204,8 +214,9 @@ public class SistemaStellare {
 	
 		
 	/**
-	 * @param codice 
-     * @return 
+	 * Controlla se è presente un corpo
+	 * @param codice Codice del corpo da controllare
+     * @return true se il corpo è presente, false se non è presente
      */
 	public boolean presenteCorpoCodice(String codice) {
 		Stella stella = getStella();
@@ -223,8 +234,9 @@ public class SistemaStellare {
 		}
 	}
 	/** 
-     * @param codice
-     * @return 
+	 * Calcola il percorso necessario per raggiugnere un corpo celeste a partire dalla stella
+     * @param codice Codice del corpo celeste da ragigungere
+     * @return Stringa contenente il percorso
      */
 	public String percorso(String codice){
 		String perc = "Stella : "+ stella.getNome()+"("+stella.getCodice()+")";
@@ -253,7 +265,7 @@ public class SistemaStellare {
 		return perc;
 	}
 	
-	public double[] getDistanza(String codice) {
+	private double[] getDistanza(String codice) {
 		Stella stella = getStella();
 		double[]c = new double[2];
 		double d = 0, e = 0;
@@ -281,6 +293,12 @@ public class SistemaStellare {
 		c[1] =e;
 		return c;
 	}
+	
+	/**
+	 * Controlla se è presente un corpo dato il suo nome
+	 * @param nome Nome del corpo da cercare
+	 * @return true se presente, false se non presente
+	 */
 	public boolean presenteCorpoNome(String nome) {
 		if(stella.getNome().equals(nome)) return true;
 		for(Pianeta pianeta: stella.getPianeti()) {
@@ -291,6 +309,12 @@ public class SistemaStellare {
 		}
 		return false;
 	}
+	
+	/**
+	 * Controlla se è presente un corpo date le sue coordinate
+	 * @param punto Coordinate del corpo da cercare
+	 * @return true se presente, false se non presente
+	 */
 	public boolean presenteCorpoPunto(Punto punto) {
 		if(stella.getCord().getX() == punto.getX() &&
 		   stella.getCord().getY() == punto.getY()) return true;
