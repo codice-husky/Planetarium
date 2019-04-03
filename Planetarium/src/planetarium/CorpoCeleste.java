@@ -60,7 +60,8 @@ public abstract class CorpoCeleste {
 	}
 	/**
 	 * Restituisce il corpo celeste attorno cui ruota il corpo celeste
-	 * @return null se è una stella
+	 * @param ss Sistema stellare di riferimento
+	 * @return null se è una stella o non esiste
 	 * @return stella se questo corpo è un pianeta e quindi rotea attorno ad
 	 *                una stella
 	*/
@@ -75,7 +76,16 @@ public abstract class CorpoCeleste {
 		}
 		return null;
 	}
-	
+	/**
+	 * Restituisce il tipo di corpo cercato attraverso il codice passato come
+	 * parametro
+	 * @param ss Sistema stellare di riferimento
+	 * @param codice Codice del corpo da cercare
+	 * @return null Se non esiste quel codice
+	 * @return stella Se il codice corrisponde a quello della stella
+	 * @return pianeta  Se il codice corrisponde a quello di un pianeta
+	 * @return satellite Se il codice corrisponde a quello di un satellite
+	*/
 	
 	public static CorpoCeleste getCorpoFromCodice(SistemaStellare ss, String codice) {
 		Stella stella = ss.getStella();
