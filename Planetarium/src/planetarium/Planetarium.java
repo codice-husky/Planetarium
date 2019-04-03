@@ -1,4 +1,5 @@
 package planetarium;
+import java.text.DecimalFormat;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -63,7 +64,7 @@ class InputData {
 					System.out.print("Inserisci le coordinata x: ");
 					coordX = sc.nextInt();
 				}catch(Exception e) {
-					System.out.println("Forse devi inserire un numero...");
+					System.out.println("Forse devi inserire un numero intero...");
 					if(sc.hasNextLine()) sc.nextLine();
 					m = true;
 				}
@@ -75,7 +76,7 @@ class InputData {
 					System.out.print("Inserisci le coordinata y: ");
 					coordY = sc.nextInt();
 				}catch(InputMismatchException e) {
-					System.out.println("Forse devi inserire un numero...");
+					System.out.println("Forse devi inserire un numero intero...");
 					if(sc.hasNextLine()) sc.nextLine();
 					m = true;
 				}
@@ -419,16 +420,17 @@ public class Planetarium {
 	 * @param ss Sistema stellare di riferimento
 	*/
 	public static void schedaCorpo(SistemaStellare ss) {
+		DecimalFormat df = new DecimalFormat("0.##");
 		String codice = getCodice();
 		if(ss.presenteCorpoCodice(codice)) {
 			CorpoCeleste cc = CorpoCeleste.getCorpoFromCodice(ss, codice);
 			System.out.println(String.format("Nome corpo: %s\n"
 					+ "Codice corpo: %s\n"
 					+ "Peso: %d\n"
-					+ "Coordinate: (%f,%f)", cc.getNome(),
+					+ "Coordinate: (%s,%s)", cc.getNome(),
 											 cc.getCodice(),
 											 cc.getPeso(),
-											 cc.getCord().getX(),cc.getCord().getY()));
+											 df.format(cc.getCord().getX()),df.format(cc.getCord().getY())));
 		}else {
 			System.out.println("Non esiste un corpo celeste con quel nome");
 		}
