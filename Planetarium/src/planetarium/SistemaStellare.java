@@ -1,22 +1,37 @@
 package planetarium;
-
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+/**
+ * Classe che contiene la stella e nella quale vengono chiamati tutti
+ * i metodi, da Planetarium, che devono lavorare con i vari corpi celesti
+ * */
 public class SistemaStellare {
 	String nome;
 	Stella stella = null;
-	
+	/**
+	 * Costruttore che inizializza il nome del sistema stellare
+	 * */
 	public SistemaStellare(String nome) {
 		this.nome = nome;
 	}
-	
+	/**
+	 * metodo che aggiunge una stella
+	 * @param _stella E' la stella che viene creata nel main e passata
+	 *                come attributo
+	 * @return true Se non esiste una stella e quindi viene aggiunta
+	 * @return false Se c'è già una stella
+	 * */
 	public boolean aggiungiStella(Stella _stella) {
 		if(stella == null) {
 			stella = _stella;
 			return true;
 		} else return false;
 	}
+	/**
+	 * metodo che rimuove la stella se esiste
+	 * @return true se viene eliminata, false se non è così
+	 * */
 	public boolean rimuoviStella() {
 		if(stella != null) {
 			stella = null;
@@ -24,7 +39,10 @@ public class SistemaStellare {
 		} else return false;
 	}
 	
-
+	/**
+	 * getter dell'oggetto Stella
+	 * @return stella	ovvero l'oggetto di classe Stella
+	 * */
 	public Stella getStella() {
 		return stella;
 	}
@@ -117,6 +135,9 @@ public class SistemaStellare {
 						}
 					}
 					if(a == true && b == true) {
+						double distA = CorpoCeleste.getCorpoFromCodice(this, codiceA).distanzaDa(pianeta);
+						double distB = CorpoCeleste.getCorpoFromCodice(this, codiceB).distanzaDa(pianeta);
+						if(distA == distB) return true;
 						return false;
 					}
 				}
@@ -134,7 +155,12 @@ public class SistemaStellare {
 		return false;
 	
 	}
-	
+	/**
+	 * Metodo usato per capire che tipo di corpo è, stella,satellite o
+	 * pianeta o "" se non esiste
+	 * @return stella se è di classe Stella, pianeta se è di classe pianeta
+	 * 		   satellite se è di classe Satellite o "" se non è nessuna dei 3
+	 * */
 	public String getStringDaCodice(String codice) {
 		if(stella.getCodice().equals(codice)) {
 			return "stella";
@@ -272,7 +298,11 @@ public class SistemaStellare {
 		perc = "Non è stato trovato nessun corpo celeste con quel codice";
 		return perc;
 	}
-	
+	/**
+	 * dato il codice restituisce la distanza che lo separa dalla stella
+	 * @return c  0,0 se è il sole d,0 se è un pianeta(che dista 'd' dalla stella
+	 *            d,e se è un satellita ('d'->stella-pianeta, 'e' pianeta-satellite)
+	 * */
 	private double[] getDistanza(String codice) {
 		Stella stella = getStella();
 		double[]c = new double[2];
