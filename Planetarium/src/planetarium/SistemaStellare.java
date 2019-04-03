@@ -75,6 +75,11 @@ public class SistemaStellare {
 				getStringDaCodice(codiceA).equals("pianeta")&& getStringDaCodice(codiceB).equals("stella")) {
 				return false;
 		}else if(getStringDaCodice(codiceA).equals("pianeta") && getStringDaCodice(codiceB).equals("pianeta")) {
+			Pianeta pA = stella.cercaPianeta(codiceA);
+			Pianeta pB = stella.cercaPianeta(codiceB);
+			if(pA.distanzaDa(stella) == pB.distanzaDa(stella)) {
+				return true;
+			}
 			return false; 
 		}else {
 			if(getStringDaCodice(codiceA).equals("pianeta") && getStringDaCodice(codiceB).equals("satellite")) { //satB appartenente 
@@ -214,9 +219,9 @@ public class SistemaStellare {
 	
 		
 	/**
-	 * Controlla se è presente un corpo
+	 * Controlla se ï¿½ presente un corpo
 	 * @param codice Codice del corpo da controllare
-     * @return true se il corpo è presente, false se non è presente
+     * @return true se il corpo ï¿½ presente, false se non ï¿½ presente
      */
 	public boolean presenteCorpoCodice(String codice) {
 		Stella stella = getStella();
@@ -295,7 +300,7 @@ public class SistemaStellare {
 	}
 	
 	/**
-	 * Controlla se è presente un corpo dato il suo nome
+	 * Controlla se ï¿½ presente un corpo dato il suo nome
 	 * @param nome Nome del corpo da cercare
 	 * @return true se presente, false se non presente
 	 */
@@ -311,7 +316,7 @@ public class SistemaStellare {
 	}
 	
 	/**
-	 * Controlla se è presente un corpo date le sue coordinate
+	 * Controlla se ï¿½ presente un corpo date le sue coordinate
 	 * @param punto Coordinate del corpo da cercare
 	 * @return true se presente, false se non presente
 	 */
