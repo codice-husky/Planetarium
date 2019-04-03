@@ -395,7 +395,7 @@ public class Planetarium {
 		boolean ris = ss.presenteCorpoCodice(codice);
 		if(ris) {
 			System.out.println(String.format("Il corpo con codice %s esite", codice));
-			if(ss.getCorpoDaCodice(codice).equals("satellite")) {
+			if(ss.getStringDaCodice(codice).equals("satellite")) {
 				for(Pianeta pianeta:ss.getStella().getPianeti()) {
 					if(pianeta.cercaSatellite(codice) != null) {
 						System.out.println(String.format("Il satellite di codice %s "
