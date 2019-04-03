@@ -52,7 +52,7 @@ class InputData {
 				c = !c;
 			else
 				System.out.println("Esiste già un corpo con quelle coordinate");
-			System.out.print("Inserisci le coordinate del"+ testo+ " (x y): ");
+			System.out.print("Inserisci le coordinate del"+ testo+ " -> x y: ");
 			int coordX = sc.nextInt();
 			int coordY = sc.nextInt();
 			sc.nextLine();
