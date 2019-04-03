@@ -38,7 +38,8 @@ class InputData {
 			else 
 				System.out.println("Esiste già un corpo con quel codice");
 			System.out.print("Vuoi assegnare un codice manualmente? S/[N]: ");
-			boolean codiceMan = sc.nextLine().equals("S")? true : false;
+			String memo = sc.nextLine().toUpperCase();
+			boolean codiceMan = memo.equals("S")? true : false;
 			if(codiceMan) {
 				System.out.print("Inserisci il codice del"+testo+": ");
 				codice = sc.nextLine();
@@ -100,7 +101,7 @@ public class Planetarium {
 		SistemaStellare ss = new SistemaStellare(nome);
 		//CREAZIONE AUTOMATICA STELLA, PIANETA, SATELLITE
 		System.out.print("vuoi creare automaticamente un piccolo sistema? (S/N) ");
-		String crea = sc.nextLine();
+		String crea = sc.nextLine().toUpperCase();
 		if(crea.equals("S")) {
 			System.out.println("SONO STATI CREATI AUTOMATICAMENTE UNA STELLA"
 					+ " 2 PIANETI E 3 SATELLITI ");
@@ -328,11 +329,12 @@ public class Planetarium {
 			System.out.println("Bisogna prima aggiungere almeno un pianeta!");
 			return false;
 		} else {
-			System.out.println("Inserisci il codice del pianeta: ");
+			System.out.print("Inserisci il codice del pianeta di appartenenza: ");
 			String codPianeta = sc.nextLine();
 			Pianeta pianeta = ss.getStella().cercaPianeta(codPianeta);
 			while(pianeta == null) {
-				System.out.println("Inserisci il codice del pianeta: ");
+				System.out.println("Non esiste un pianeta con quel codice");
+				System.out.print("Inserisci il codice del pianeta di appartenenza: ");
 				codPianeta = sc.nextLine();
 				pianeta = ss.getStella().cercaPianeta(codPianeta);
 			}
