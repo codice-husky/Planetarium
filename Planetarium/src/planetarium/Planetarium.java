@@ -389,7 +389,7 @@ public class Planetarium {
 	 * dice anche intorno a quale pianeta rotea
 	 * @param ss Sistema stellare di riferimento
 	*/
-	public static void ricerca(SistemaStellare ss) {
+	public static void ricerca(SistemaStellare ss) { 
 		System.out.print("Inserire il codice del corpo: ");
 		String codice = sc.nextLine();
 		boolean ris = ss.presenteCorpoCodice(codice);
