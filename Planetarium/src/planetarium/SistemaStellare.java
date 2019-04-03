@@ -11,6 +11,7 @@ public class SistemaStellare {
 	Stella stella = null;
 	/**
 	 * Costruttore che inizializza il nome del sistema stellare
+	 * @param nome Nome del sistema stellare
 	 * */
 	public SistemaStellare(String nome) {
 		this.nome = nome;
@@ -19,8 +20,8 @@ public class SistemaStellare {
 	 * metodo che aggiunge una stella
 	 * @param _stella E' la stella che viene creata nel main e passata
 	 *                come attributo
-	 * @return true Se non esiste una stella e quindi viene aggiunta
-	 * @return false Se c'√® gi√† una stella
+	 * @return true Se non esiste una stella e quindi viene aggiunta,
+	 * false Se c'Ë gi‡†una stella
 	 * */
 	public boolean aggiungiStella(Stella _stella) {
 		if(stella == null) {
@@ -156,10 +157,11 @@ public class SistemaStellare {
 	
 	}
 	/**
-	 * Metodo usato per capire che tipo di corpo √®, stella,satellite o
+	 * Metodo usato per capire che tipo di corpo Ë, stella,satellite o
 	 * pianeta o "" se non esiste
-	 * @return stella se √® di classe Stella, pianeta se √® di classe pianeta
-	 * 		   satellite se √® di classe Satellite o "" se non √® nessuna dei 3
+	 * @param codice Codice del corpo celeste
+	 * @return stella se Ë di classe Stella, pianeta se Ë di classe pianeta
+	 * 		   satellite se Ë di classe Satellite o "" se non Ë nessuna dei 3
 	 * */
 	public String getStringDaCodice(String codice) {
 		if(stella.getCodice().equals(codice)) {
