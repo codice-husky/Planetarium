@@ -1,4 +1,5 @@
 package planetarium;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
@@ -26,8 +27,9 @@ class InputData {
 			else {			//				 \/
 				System.out.println("Esiste già un corpo con quel nome");
 			}
-			System.out.println("Inserisci il nome del"+testo+": ");
+			System.out.print("Inserisci il nome del"+testo+": ");
 			nome = sc.nextLine();
+			if(ss.getStella()==null) break;
 		}while(ss.presenteCorpoNome(nome));
 		c = false;
 		do {
@@ -35,14 +37,15 @@ class InputData {
 				c = !c;
 			else 
 				System.out.println("Esiste già un corpo con quel codice");
-			System.out.println("Vuoi assegnare un codice manualmente? S/[N]: ");
+			System.out.print("Vuoi assegnare un codice manualmente? S/[N]: ");
 			boolean codiceMan = sc.nextLine().equals("S")? true : false;
 			if(codiceMan) {
-				System.out.println("Inserisci il codice del"+testo+": ");
+				System.out.print("Inserisci il codice del"+testo+": ");
 				codice = sc.nextLine();
-			} else codice = "SRND" + Math.floor(Math.random()*100000);
+			} else codice = "SRND" + (int)(Math.random()*100000);
+			if(ss.getStella()==null) break;
 		}while(ss.presenteCorpoCodice(codice));
-		System.out.println("Inserisci il peso del "+testo +": ");
+		System.out.print("Inserisci il peso del"+testo +": ");
 		peso = Integer.parseInt(sc.nextLine());
 		c = false;
 		do {
@@ -50,11 +53,36 @@ class InputData {
 				c = !c;
 			else
 				System.out.println("Esiste già un corpo con quelle coordinate");
-			System.out.println("Inserisci le coordinate del"+ testo+ " (x y): ");
-			int coordX = sc.nextInt();
-			int coordY = sc.nextInt();
+			int coordX = 0;
+			int coordY = 0;
+			boolean m = true;
+			while(m){
+				try {
+					m=!m;
+					System.out.print("Inserisci le coordinata x: ");
+					coordX = sc.nextInt();
+				}catch(Exception e) {
+					System.out.println("Forse devi inserire un numero...");
+					if(sc.hasNextLine()) sc.nextLine();
+					m = true;
+				}
+			}
+			m = true;
+			while(m){
+				try {
+					m=false;
+					System.out.print("Inserisci le coordinata y: ");
+					coordY = sc.nextInt();
+				}catch(InputMismatchException e) {
+					System.out.println("Forse devi inserire un numero...");
+					if(sc.hasNextLine()) sc.nextLine();
+					m = true;
+				}
+			}
 			sc.nextLine();
+			
 			coordinate = new Punto(coordX, coordY);
+			if(ss.getStella()==null) break;
 		}while(ss.presenteCorpoPunto(coordinate));
 	}
 }
@@ -71,7 +99,7 @@ public class Planetarium {
 		String nome = sc.nextLine();
 		SistemaStellare ss = new SistemaStellare(nome);
 		//CREAZIONE AUTOMATICA STELLA, PIANETA, SATELLITE
-		System.out.print("vuoi creare automaticamente un piccolo sistema? (S/N)");
+		System.out.print("vuoi creare automaticamente un piccolo sistema? (S/N) ");
 		String crea = sc.nextLine();
 		if(crea.equals("S")) {
 			System.out.println("SONO STATI CREATI AUTOMATICAMENTE UNA STELLA"
@@ -82,8 +110,10 @@ public class Planetarium {
 			ss.stella.cercaPianeta("2").aggiungiSatellite(new Satellite("Luna 1","4",1,new Punto(5,0)));
 			ss.stella.cercaPianeta("3").aggiungiSatellite(new Satellite("Luna 2","5",2,new Punto(8,0)));
 			ss.stella.cercaPianeta("3").aggiungiSatellite(new Satellite("Luna 3","6",1,new Punto(4,4)));
-		}else {
+		}else if(crea.equals("N")){
 			System.out.println("NON E' STATO CREATO IL SISTEMA");
+		}else {
+			System.out.println("Lo prendo come un no");
 		}
 		System.out.println("--------------------------------------");
 		String cmnd;
@@ -100,44 +130,85 @@ public class Planetarium {
 				aggiungiStella(ss);
 				break;
 			case "aggiungi pianeta":
+				if(ss.getStella()==null) {
+					System.out.println("Devi prima inserire una stella");
+					break;
+				}
 				aggiungiPianeta(ss);
 				break;
 			case "aggiungi satellite":
+				if(ss.getStella()==null) {
+					System.out.println("Devi prima inserire una stella");
+					break;
+				}
 				aggiungiSatellite(ss);
 				break;
 			case "rimuovi stella":
+				if(ss.getStella()==null) {
+					System.out.println("Devi prima inserire una stella");
+					break;
+				}
 				rStella(ss);
 				break;
 			case "rimuovi pianeta":
+				if(ss.getStella()==null) {
+					System.out.println("Devi prima inserire una stella");
+					break;
+				}
 				rPianeta(ss);
 				break;
 			case "rimuovi satellite":
+				if(ss.getStella()==null) {
+					System.out.println("Devi prima inserire una stella");
+					break;
+				}
 				rSatellite(ss);
 				break;
 			case "percorso":
+				if(ss.getStella()==null) {
+					System.out.println("Devi prima inserire una stella");
+					break;
+				}
 				percorso(ss);
 				break;
 			case "visualizza sistema":
 				printSistema(ss);
 				break;
 			case "centro massa":
+				if(ss.getStella()==null) {
+					System.out.println("Devi prima inserire una stella");
+					break;
+				}
 				centroMassa(ss);
 				break;
 			case "scheda corpo":
+				if(ss.getStella()==null) {
+					System.out.println("Devi prima inserire una stella");
+					break;
+				}
 				schedaCorpo(ss);
 				break;
 			case "calcola rotta":
 				calcolaRotta(ss);
 				break;
 			case "collisione":
+				if(ss.getStella()==null) {
+					System.out.println("Devi prima inserire una stella");
+					break;
+				}
 				collisione(ss);
 				break;
 			case "ricerca":
+				if(ss.getStella()==null) {
+					System.out.println("Devi prima inserire una stella");
+					break;
+				}
 				ricerca(ss);
 				break;
 			case "esci":
 				end = !end;
-				System.out.println("\n Fine del programma");
+				System.out.println("\nFine del programma");
+				break;
 			default:
 				System.out.println("Comando non riconosciuto!");
 				break;
@@ -150,6 +221,7 @@ public class Planetarium {
 	 * Visualizza tutti i comandi che il programma dispone
 	 * */
 	public static void aiuto() {
+		System.out.println("------------------------------------------------------------------------------");
 		System.out.println("aiuto: per ricevere aiuto");
 		System.out.println("aggiungi stella: per aggiungere una nuova stella");
 		System.out.println("aggiungi pianeta: per aggiungere un pianeta");
@@ -164,10 +236,12 @@ public class Planetarium {
 				+ 		   "                    del terzo punto");
 		System.out.println("centro massa: visualizza le coordinate del centro di massa del sistema");
 		System.out.println("calcola rotta: mostra il percorso che c'è  tra 2 corpi celesti");
+		System.out.println("scheda corpo: visualizza tutte i suoi attributi (posizione,nome codice ...)");
 		System.out.println("collisione: per vedere se 2 corpi potrebbero collidere");
 		System.out.println("ricerca: dice se esiste o meno un corpo e se è un satellite\n"
 				+ 		   "         mostra anche il pianeta attorno a cui rotea (facendo quindi \n"
 				+ 		   "         la seconda funzionalità del secondo punto)");
+		System.out.println("------------------------------------------------------------------------------");
 	}
 	/**
 	 * Metodo per l'aggiunta di una stella, restituisce true o false in base se 
@@ -176,6 +250,10 @@ public class Planetarium {
 	 * @return true se aggiunto,false se non lo ha fatto
 	 * */
 	public static boolean aggiungiStella(SistemaStellare ss) {
+		if(ss.getStella()!=null) {
+			System.out.println("Esiste già una stella");
+			return false;
+		}
 		InputData inputStella = new InputData("la stella", sc,ss);
 		return ss.aggiungiStella(new Stella(inputStella.nome, inputStella.codice, inputStella.peso, inputStella.coordinate));
 	}
@@ -281,9 +359,12 @@ public class Planetarium {
 			if(ris) {
 				System.out.println("Satellite rimosso con successo!");
 			}else {
-				System.out.println("Non esiste un satellite con quel nome");
+				System.out.println("Non esiste il satellite in quel pianeta oppure "
+						+          "non esiste il codice");
 			}
-		}	
+		}else {
+			System.out.println("Non esiste quel pianeta");
+		}
 	}
 	
 	/** Metodo utilizzato dagli altri metodi per la scrittura di un codice,
@@ -292,7 +373,7 @@ public class Planetarium {
 	 * @return il codice appena inserito
 	*/
 	public static String getCodice() {
-		System.out.println("Inserisci il codice: ");
+		System.out.print("Inserisci il codice: ");
 		return (sc.nextLine());
 	}
 	/**
@@ -304,13 +385,17 @@ public class Planetarium {
 	 * @param ss Sistema stellare di riferimento
 	*/
 	public static void printSistema(SistemaStellare ss) {
-		System.out.println("Stella "+ ss.stella.getNome());
-		for(Pianeta pianeta: ss.stella.getPianeti()) {
-			System.out.println(String.format("  Pianeta: %s(%s)", 
-					pianeta.getNome(),pianeta.getCodice()));
-			for(Satellite satellite: pianeta.getSatelliti()) {
-				System.out.println(String.format("    Satellite: %s(%s)", 
-						satellite.getNome(),satellite.getCodice()));
+		if(ss.stella==null) {
+			System.out.println("Sistema vuoto");
+		}else {
+			System.out.println(String.format("Stella %s (Codice: %s)", ss.getStella().getNome(),ss.getStella().getCodice()));
+			for(Pianeta pianeta: ss.stella.getPianeti()){
+				System.out.println(String.format("  Pianeta: %s (Codice: %s)", 
+						pianeta.getNome(),pianeta.getCodice()));
+				for(Satellite satellite: pianeta.getSatelliti()) {
+					System.out.println(String.format("    Satellite: %s (Codice: %s)", 
+							satellite.getNome(),satellite.getCodice()));
+				}
 			}
 		}
 	}
@@ -319,10 +404,12 @@ public class Planetarium {
 	 * @param ss Sistema stellare di riferimento
 	*/
 	public static void centroMassa(SistemaStellare ss) {
-		Punto centro = ss.calcolaCentroMassa();
-		String x = ""+(Math.round(centro.getX()*1000.0)/1000.0);
-		String y = ""+(Math.round(centro.getY()*1000.0)/1000.0);
-		System.out.println(String.format("Le cordinate del centro di massa sono (%s, %s)",x,y));
+		if(ss.getStella()!= null) {
+			Punto centro = ss.calcolaCentroMassa();
+			String x = ""+(Math.round(centro.getX()*1000.0)/1000.0);
+			String y = ""+(Math.round(centro.getY()*1000.0)/1000.0);
+			System.out.println(String.format("Le cordinate del centro di massa sono (%s, %s)",x,y));
+		}
 	}
 	/**
 	 * Visualizza i dati di un corpo celeste dato il suo codice 
@@ -375,10 +462,10 @@ public class Planetarium {
 	 * @param ss Sistema stellare di riferimento 
 	*/
 	public static void calcolaRotta(SistemaStellare ss) {
-		System.out.println("Inserisci il codice del corpo celeste di partenza: ");
+		System.out.print("Inserisci il codice del corpo celeste di partenza: ");
 		String cPartenza = sc.nextLine();
 		
-		System.out.println("Inserisci il codice del corpo celeste di arrivo: ");
+		System.out.print("Inserisci il codice del corpo celeste di arrivo: ");
 		String cArrivo = sc.nextLine();
 		
 		
@@ -394,12 +481,12 @@ public class Planetarium {
 		String codice = sc.nextLine();
 		boolean ris = ss.presenteCorpoCodice(codice);
 		if(ris) {
-			System.out.println(String.format("Il corpo con codice %s esite", codice));
+			System.out.println(String.format("Il corpo con codice %s esite ed è di classe %s", codice,ss.getStringDaCodice(codice)));
 			if(ss.getStringDaCodice(codice).equals("satellite")) {
 				for(Pianeta pianeta:ss.getStella().getPianeti()) {
 					if(pianeta.cercaSatellite(codice) != null) {
-						System.out.println(String.format("Il satellite di codice %s "
-								+ "rotea intorno al pianeta %s",codice,pianeta.getNome()));
+						System.out.println(String.format("Il corpo esiste ed è il satellite di codice %s che "
+								+ "rotea intorno al pianeta: %s",codice,pianeta.getNome()));
 					}
 				}
 			}

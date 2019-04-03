@@ -3,7 +3,7 @@ import java.util.*;
 
 
 /**
- * Classe Pianeta contenente i parametri di un generico corpo celeste più i parametri specifici
+ * Classe Pianeta contenente i parametri di un generico corpo celeste piï¿½ i parametri specifici
  * @author Codice Husky
  *
  */

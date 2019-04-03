@@ -1,22 +1,38 @@
 package planetarium;
-
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+/**
+ * Classe che contiene la stella e nella quale vengono chiamati tutti
+ * i metodi, da Planetarium, che devono lavorare con i vari corpi celesti
+ * */
 public class SistemaStellare {
 	String nome;
 	Stella stella = null;
-	
+	/**
+	 * Costruttore che inizializza il nome del sistema stellare
+	 * @param nome Nome del sistema stellare
+	 * */
 	public SistemaStellare(String nome) {
 		this.nome = nome;
 	}
-	
+	/**
+	 * metodo che aggiunge una stella
+	 * @param _stella E' la stella che viene creata nel main e passata
+	 *                come attributo
+	 * @return true Se non esiste una stella e quindi viene aggiunta,
+	 * false Se c'è già una stella
+	 * */
 	public boolean aggiungiStella(Stella _stella) {
 		if(stella == null) {
 			stella = _stella;
 			return true;
 		} else return false;
 	}
+	/**
+	 * metodo che rimuove la stella se esiste
+	 * @return true se viene eliminata, false se non Ã¨ cosÃ¬
+	 * */
 	public boolean rimuoviStella() {
 		if(stella != null) {
 			stella = null;
@@ -24,7 +40,10 @@ public class SistemaStellare {
 		} else return false;
 	}
 	
-
+	/**
+	 * getter dell'oggetto Stella
+	 * @return stella	ovvero l'oggetto di classe Stella
+	 * */
 	public Stella getStella() {
 		return stella;
 	}
@@ -70,11 +89,21 @@ public class SistemaStellare {
 		double e = vA[1];
 		double d0 = vB[0];
 		double e0 = vB[1];
+		if((d-e)<0 || (d0-e0)<0) {
+			System.out.println("la distanza tra un satellite e il suo pianeta Ã¨ maggiore"
+					+ " che tra il pianeta e la stella, \n  si consiglia di rimuovere il satellite"
+					+ " e rifarlo");
+		}
 		if(codiceA.equals(codiceB)) return false;
 		if((getStringDaCodice(codiceA).equals("stella")&& getStringDaCodice(codiceB).equals("pianeta"))|| //stella e pianeta
 				getStringDaCodice(codiceA).equals("pianeta")&& getStringDaCodice(codiceB).equals("stella")) {
 				return false;
 		}else if(getStringDaCodice(codiceA).equals("pianeta") && getStringDaCodice(codiceB).equals("pianeta")) {
+			Pianeta pA = stella.cercaPianeta(codiceA);
+			Pianeta pB = stella.cercaPianeta(codiceB);
+			if(pA.distanzaDa(stella) == pB.distanzaDa(stella)) {
+				return true;
+			}
 			return false; 
 		}else {
 			if(getStringDaCodice(codiceA).equals("pianeta") && getStringDaCodice(codiceB).equals("satellite")) { //satB appartenente 
@@ -107,18 +136,19 @@ public class SistemaStellare {
 						}
 					}
 					if(a == true && b == true) {
+						double distA = CorpoCeleste.getCorpoFromCodice(this, codiceA).distanzaDa(pianeta);
+						double distB = CorpoCeleste.getCorpoFromCodice(this, codiceB).distanzaDa(pianeta);
+						if(distA == distB) return true;
 						return false;
 					}
 				}
 			}
 			if(d0 > d) {
 				if((d0-e0)<=(d+e)) {
-					System.out.println("qui");
 					return true;
 				}
 			}else {
 				if((d0+e0)>=(d-e)) {
-					System.out.println("qua");
 					return true;
 				}
 			}
@@ -126,7 +156,13 @@ public class SistemaStellare {
 		return false;
 	
 	}
-	
+	/**
+	 * Metodo usato per capire che tipo di corpo è, stella,satellite o
+	 * pianeta o "" se non esiste
+	 * @param codice Codice del corpo celeste
+	 * @return stella se è di classe Stella, pianeta se è di classe pianeta
+	 * 		   satellite se è di classe Satellite o "" se non è nessuna dei 3
+	 * */
 	public String getStringDaCodice(String codice) {
 		if(stella.getCodice().equals(codice)) {
 			return "stella";
@@ -214,9 +250,9 @@ public class SistemaStellare {
 	
 		
 	/**
-	 * Controlla se è presente un corpo
+	 * Controlla se ï¿½ presente un corpo
 	 * @param codice Codice del corpo da controllare
-     * @return true se il corpo è presente, false se non è presente
+     * @return true se il corpo ï¿½ presente, false se non ï¿½ presente
      */
 	public boolean presenteCorpoCodice(String codice) {
 		Stella stella = getStella();
@@ -264,7 +300,11 @@ public class SistemaStellare {
 		perc = "Non Ã¨ stato trovato nessun corpo celeste con quel codice";
 		return perc;
 	}
-	
+	/**
+	 * dato il codice restituisce la distanza che lo separa dalla stella
+	 * @return c  0,0 se Ã¨ il sole d,0 se Ã¨ un pianeta(che dista 'd' dalla stella
+	 *            d,e se Ã¨ un satellita ('d'->stella-pianeta, 'e' pianeta-satellite)
+	 * */
 	private double[] getDistanza(String codice) {
 		Stella stella = getStella();
 		double[]c = new double[2];
@@ -295,7 +335,7 @@ public class SistemaStellare {
 	}
 	
 	/**
-	 * Controlla se è presente un corpo dato il suo nome
+	 * Controlla se ï¿½ presente un corpo dato il suo nome
 	 * @param nome Nome del corpo da cercare
 	 * @return true se presente, false se non presente
 	 */
@@ -311,7 +351,7 @@ public class SistemaStellare {
 	}
 	
 	/**
-	 * Controlla se è presente un corpo date le sue coordinate
+	 * Controlla se ï¿½ presente un corpo date le sue coordinate
 	 * @param punto Coordinate del corpo da cercare
 	 * @return true se presente, false se non presente
 	 */
