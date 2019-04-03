@@ -1,6 +1,7 @@
 package planetarium;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class SistemaStellare {
 	String nome;
@@ -173,19 +174,31 @@ public class SistemaStellare {
 			posIncontroPartenza++;
 		}
 		
+		double distanza = 0;
+		LinkedList<CorpoCeleste> corpiFinali = new LinkedList<CorpoCeleste>();
 		
-		
-		if(posIncontroPartenza != 0) rotta = rotta.concat(parentPartenza.get(0).getNome() + " (Codice: "+parentPartenza.get(0).getCodice()+")");
+		if(posIncontroPartenza != 0) {
+			rotta = rotta.concat(parentPartenza.get(0).getNome() + " (Codice: "+parentPartenza.get(0).getCodice()+")");
+			corpiFinali.add(parentPartenza.get(0));
+		}
 		for(int i=1; i<posIncontroPartenza; i++) {
+			corpiFinali.add(parentPartenza.get(i));
 			rotta = rotta.concat(" > " +parentPartenza.get(i).getNome() + " (Codice: "+parentPartenza.get(i).getCodice()+")");
 		}
 		
 		if(posIncontroPartenza != 0) rotta = rotta.concat(" > ");
 		rotta = rotta.concat(parentArrivo.get(posIncontroArrivo).getNome() + " (Codice: "+parentArrivo.get(posIncontroArrivo).getCodice()+")");
+		corpiFinali.add(parentArrivo.get(posIncontroArrivo));
 		for(int i=posIncontroArrivo-1; i>=0; i--) {
+			corpiFinali.add(parentArrivo.get(i));
 			rotta = rotta.concat(" > " + parentArrivo.get(i).getNome() + " (Codice: "+parentArrivo.get(i).getCodice()+")");
 		}
 		
+		for(int i=0; i<corpiFinali.size()-1; i++) {
+			distanza+=corpiFinali.get(i).distanzaDa(corpiFinali.get(i+1));
+		}
+		
+		rotta = rotta.concat("\nDistanza: " + distanza);
 		return rotta;
 	}
 	
