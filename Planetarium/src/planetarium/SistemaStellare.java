@@ -70,6 +70,11 @@ public class SistemaStellare {
 		double e = vA[1];
 		double d0 = vB[0];
 		double e0 = vB[1];
+		if((d-e)<0 || (d0-e0)<0) {
+			System.out.println("la distanza tra un satellite e il suo pianeta è maggiore"
+					+ " che tra il pianeta e la stella, \n  si consiglia di rimuovere il satellite"
+					+ " e rifarlo");
+		}
 		if(codiceA.equals(codiceB)) return false;
 		if((getStringDaCodice(codiceA).equals("stella")&& getStringDaCodice(codiceB).equals("pianeta"))|| //stella e pianeta
 				getStringDaCodice(codiceA).equals("pianeta")&& getStringDaCodice(codiceB).equals("stella")) {
@@ -118,12 +123,10 @@ public class SistemaStellare {
 			}
 			if(d0 > d) {
 				if((d0-e0)<=(d+e)) {
-					System.out.println("qui");
 					return true;
 				}
 			}else {
 				if((d0+e0)>=(d-e)) {
-					System.out.println("qua");
 					return true;
 				}
 			}

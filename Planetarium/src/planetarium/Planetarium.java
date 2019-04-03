@@ -1,4 +1,6 @@
 package planetarium;
+import java.io.IOException;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
@@ -41,10 +43,10 @@ class InputData {
 			if(codiceMan) {
 				System.out.print("Inserisci il codice del"+testo+": ");
 				codice = sc.nextLine();
-			} else codice = "SRND" + Math.floor(Math.random()*100000);
+			} else codice = "SRND" + (int)(Math.random()*100000);
 			if(ss.getStella()==null) break;
 		}while(ss.presenteCorpoCodice(codice));
-		System.out.print("Inserisci il peso del "+testo +": ");
+		System.out.print("Inserisci il peso del"+testo +": ");
 		peso = Integer.parseInt(sc.nextLine());
 		c = false;
 		do {
@@ -52,10 +54,34 @@ class InputData {
 				c = !c;
 			else
 				System.out.println("Esiste già un corpo con quelle coordinate");
-			System.out.print("Inserisci le coordinate del"+ testo+ " -> x y: ");
-			int coordX = sc.nextInt();
-			int coordY = sc.nextInt();
+			int coordX = 0;
+			int coordY = 0;
+			boolean m = true;
+			while(m){
+				try {
+					m=!m;
+					System.out.print("Inserisci le coordinata x: ");
+					coordX = sc.nextInt();
+				}catch(Exception e) {
+					System.out.println("Forse devi inserire un numero...");
+					if(sc.hasNextLine()) sc.nextLine();
+					m = true;
+				}
+			}
+			m = true;
+			while(m){
+				try {
+					m=false;
+					System.out.print("Inserisci le coordinata y: ");
+					coordY = sc.nextInt();
+				}catch(InputMismatchException e) {
+					System.out.println("Forse devi inserire un numero...");
+					if(sc.hasNextLine()) sc.nextLine();
+					m = true;
+				}
+			}
 			sc.nextLine();
+			
 			coordinate = new Punto(coordX, coordY);
 			if(ss.getStella()==null) break;
 		}while(ss.presenteCorpoPunto(coordinate));
