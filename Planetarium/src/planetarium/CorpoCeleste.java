@@ -61,8 +61,8 @@ public abstract class CorpoCeleste {
 	/**
 	 * Restituisce il corpo celeste attorno cui ruota il corpo celeste
 	 * @param ss Sistema stellare di riferimento
-	 * @return null se è una stella o non esiste
-	 * @return stella se questo corpo è un pianeta e quindi rotea attorno ad
+	 * @return null se è una stella o non esiste,
+	 * stella se questo corpo è un pianeta e quindi rotea attorno ad
 	 *                una stella
 	*/
 	public CorpoCeleste getParent(SistemaStellare ss) {
@@ -81,10 +81,10 @@ public abstract class CorpoCeleste {
 	 * parametro
 	 * @param ss Sistema stellare di riferimento
 	 * @param codice Codice del corpo da cercare
-	 * @return null Se non esiste quel codice
-	 * @return stella Se il codice corrisponde a quello della stella
-	 * @return pianeta  Se il codice corrisponde a quello di un pianeta
-	 * @return satellite Se il codice corrisponde a quello di un satellite
+	 * @return null Se non esiste quel codice,
+	 * stella Se il codice corrisponde a quello della stella,
+	 * pianeta  Se il codice corrisponde a quello di un pianeta,
+	 * satellite Se il codice corrisponde a quello di un satellite
 	*/
 	
 	public static CorpoCeleste getCorpoFromCodice(SistemaStellare ss, String codice) {
