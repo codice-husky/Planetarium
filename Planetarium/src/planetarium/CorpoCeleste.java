@@ -4,7 +4,14 @@ public abstract class CorpoCeleste {
 	int peso;
 	String codice;
 	Punto punto;
-	
+	/**
+	 * Costruttore del corpo celeste che setta i vari attributi di ciascun
+	 * corpo celeste
+	 * @param _nome Nome del corpo celeste
+	 * @param _codice Codice del corpo celeste
+	 * @param _peso Peso del corpo celeste
+	 * @param _punto Coordinate del corpo celeste
+	*/
 	public CorpoCeleste(String _nome, String _codice, int _peso, Punto _punto) {
 		nome = _nome;
 		codice = _codice;
@@ -13,53 +20,50 @@ public abstract class CorpoCeleste {
 	}
 	
 	
-	/**
-     * @param nome
-     */
-	public void setNome(String nome){
-		this.nome = nome;
-	}
 	/** 
-     * @return 
+	 * Getter del attributo nome
+     * @return nome Nome del corpo
      */
 	public String getNome() {
 		return nome;
 	}
+	
 	/** 
-     * @param peso 
-     */
-	public void setPeso(int peso) {
-		this.peso = peso;
-	}
-	/** 
-     * @return 
+	 * Getter del attributo peso
+     * @return peso Peso del corpo
      */
 	public int getPeso() {
 		return peso;
 	}
+	
 	/** 
-     * @param codice 
-     */
-	public void setCodice(String codice) {
-		this.codice = codice;
-	}
-	/** 
-     * @return 
+	 * Getter del attributo codice
+     * @return codice Codice del corpo
      */
 	public String getCodice() {
 		return codice;
 	}
 	/** 
-     * @return 
+	 * Getter del attributo punto
+     * @return punto Coordinate del corpo
      */
 	public Punto getCord() {
 		return punto;
 	}
-	
+	/**
+	 * Restituisce la distanza dal corpo celeste passato come parametro
+	 * @param cc Il corpo celeste da confrontare
+	 * @return Distanza da cc
+	*/
 	public double distanzaDa(CorpoCeleste cc) {
 		return Math.sqrt(Math.pow(punto.getX()-cc.getCord().getX(), 2) + Math.pow(punto.getY()-cc.getCord().getY(), 2));
 	}
-	
+	/**
+	 * Restituisce il corpo celeste attorno cui ruota il corpo celeste
+	 * @return null se è una stella
+	 * @return stella se questo corpo è un pianeta e quindi rotea attorno ad
+	 *                una stella
+	*/
 	public CorpoCeleste getParent(SistemaStellare ss) {
 		Stella stella = ss.getStella();
 		if(stella.getCodice().equals(codice)) return null;
